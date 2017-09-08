@@ -1,0 +1,3 @@
+# MultipleTreeSelect.js
+MultipleTreeSelect
+用于处理低侵入的树形选择框业务
