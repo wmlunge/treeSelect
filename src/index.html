@@ -1,0 +1,54 @@
+﻿<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+<head>
+    <title>mutipleTreeDemo</title>
+    <link type="text/css" rel="stylesheet" href="css/demo.css">
+    <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
+    <script type="text/javascript" src="JasonMultipleTreeSelect.js"></script>
+
+    <script>
+
+
+    </script>
+    <script type="text/javascript">
+
+
+        var zNodes = [
+            {id: 1, pId: 0, name: "jason", checked: true, open: true},
+            {id: 11, pId: 1, name: "李苏红", open: true, checked: true},
+            {id: 111, pId: 11, name: "李蒙", nocheck: true},
+            {id: 112, pId: 11, name: "小黄"},
+            {id: 12, pId: 1, name: "小皇甫", nocheck: true, open: true},
+            {id: 121, pId: 12, name: "小陈伟"},
+            {id: 122, pId: 12, name: "小姜姜"},
+            {id: 2, pId: 0, name: "蒋丰", open: true},
+            {id: 21, pId: 2, name: "汪杰"},
+            {id: 22, pId: 2, name: "郭锐", open: true},
+            {id: 221, pId: 22, name: "凯哥"},
+            {id: 222, pId: 22, name: "刘杰"},
+            {id: 23, pId: 2, name: "刘斌"}
+        ];
+        var defaults = {
+            textLabel: "jasontext",
+            zNodes: zNodes
+        }
+
+        $(document).ready(function () {
+
+            $("#jsaontree").drawMultipleTree(defaults);
+        });
+        //-->
+    </script>
+</head>
+
+<body>
+<textarea id="jsaontree" style="width: 300px" name="dutyAreaNames"
+          type="text" readonly>
+                        </textarea>
+
+</body>
+</html>
