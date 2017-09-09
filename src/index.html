@@ -34,9 +34,9 @@
         ];
         var defaults = {
             textLabel: "jasontext",
-           /* zNodes: zNodes,如果不用异步请求的方式的需要传入该值*/
+             zNodes: zNodes, 
             async: {
-                enable: true,
+                enable: false,
                 url:"http://localhost/smz/doubleRandom/drRandomArea!listAreaTree.do?selectID="
             }
         }
@@ -44,6 +44,8 @@
         $(document).ready(function () {
 
             $("#jsaontree").drawMultipleTree(defaults);
+			   $("#lisuhong").drawMultipleTree(defaults);
+			
         });
         //-->
 		function getvalue(type){
@@ -55,6 +57,9 @@
 
 <body>
 <textarea id="jsaontree" style="width: 300px" name="dutyAreaNames"
+          type="text" readonly>
+                        </textarea>
+						<textarea id="lisuhong" style="width: 300px" name="lisuhong"
           type="text" readonly>
                         </textarea>
 <button onclick="getvalue('value')">获取选中的值</button>
