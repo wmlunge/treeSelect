@@ -6,7 +6,7 @@
     <link type="text/css" rel="stylesheet" href="css/demo.css">
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
 
-    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
     <script type="text/javascript" src="JasonMultipleTreeSelect.js"></script>
 
@@ -42,6 +42,10 @@
             $("#jsaontree").drawMultipleTree(defaults);
         });
         //-->
+		function getvalue(type){
+			var cvalue=$("#jsaontree").drawMultipleTree('getChecks',type);
+			alert(cvalue);
+		}
     </script>
 </head>
 
@@ -49,6 +53,7 @@
 <textarea id="jsaontree" style="width: 300px" name="dutyAreaNames"
           type="text" readonly>
                         </textarea>
-
+<button onclick="getvalue('value')">获取选中的值</button>
+<button onclick="getvalue('text')">获取选中的文本</button>
 </body>
 </html>

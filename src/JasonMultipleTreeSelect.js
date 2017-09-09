@@ -48,8 +48,10 @@
             }
             if (v.length > 0) v = v.substring(0, v.length - 1);
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
-
-            return v;
+            if ("text" === type)
+                return v;
+            else
+                return rv
         }
     }
     var bind_element_click_event = function () {
