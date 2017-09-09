@@ -1,6 +1,8 @@
 # MultipleTreeSelect.js
-###用于处理低侵入的树形选择框业务。基于ztree实现
-###依赖jaquey和ztree
+用于处理低侵入的树形选择框业务。基于ztree实现
+--------
+依赖jaquey和ztree
+---------
 使用方法为<br>
 1.首先传入一个配置<br>
  var defaults = {<br>
