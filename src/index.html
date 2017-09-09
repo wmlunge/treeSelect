@@ -34,7 +34,11 @@
         ];
         var defaults = {
             textLabel: "jasontext",
-            zNodes: zNodes
+           /* zNodes: zNodes,如果不用异步请求的方式的需要传入该值*/
+            async: {
+                enable: true,
+                url:"http://localhost/smz/doubleRandom/drRandomArea!listAreaTree.do?selectID="
+            }
         }
 
         $(document).ready(function () {

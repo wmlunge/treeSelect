@@ -2,7 +2,11 @@
     var $target_element;
     var defaults = {
         textLabel: "",
-        zNodes: []
+        zNodes: [],
+        async: {
+            enable: false,
+            url: ""
+        }
     }
 
     var DrawMultipleTree = function (target_element, options) {
@@ -109,7 +113,7 @@
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
             inner_$target_element.val(v);
             $("#" + inner_val_name).attr("value", rv);
-          /*  console.log($("#" + inner_val_name).val())*/
+            /*  console.log($("#" + inner_val_name).val())*/
         }
         var setting = {
             check: {
@@ -126,7 +130,8 @@
             },
             callback: {
                 onCheck: ztreeOnCheck
-            }
+            },
+            async: this.options.async
         };
         var zTreeObj = $.fn.zTree.init($("#" + this.ztreeid), setting, this.options.zNodes);
         zTreeObj.setting.callback.onCheck();
