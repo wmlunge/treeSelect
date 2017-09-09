@@ -6,6 +6,7 @@
 使用方法为<br>
 ------
 支持谷歌，ie8+
+---
 1.首先传入一个配置<br>
  var defaults = {<br>
             textLabel: "选中的text内容将作为此表单项提交",<br>
