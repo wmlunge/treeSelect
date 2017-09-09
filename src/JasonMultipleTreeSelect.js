@@ -51,7 +51,7 @@
             if ("text" === type)
                 return v;
             else
-                return rv
+                return rv;
         }
     }
     var bind_element_click_event = function () {
@@ -109,7 +109,7 @@
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
             inner_$target_element.val(v);
             $("#" + inner_val_name).attr("value", rv);
-            console.log($("#" + inner_val_name).val())
+          /*  console.log($("#" + inner_val_name).val())*/
         }
         var setting = {
             check: {
