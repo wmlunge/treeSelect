@@ -7,14 +7,37 @@
             enable: false,
             url: ""
         }
+
     }
 
     var DrawMultipleTree = function (target_element, options) {
         this.$target_element = $(target_element);
+        _self = this;
 
-        this.options = $.extend({}, defaults, options, this.$target_element.data());//合并业务数据
+        var $options = function () {
+            return $.extend({}, defaults, options, _self.$target_element.data());//合并业务数据
+        }
+        /*避免共用同一个配置时两边干扰*/
+        this.options = cloneObj(new $options());
         this.init();
     }
+
+    function GenNonDuplicateID(randomLength) {
+        return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
+    }
+
+    var cloneObj = function (obj) {
+        var newObj = {};
+        if (obj instanceof Array) {
+            newObj = [];
+        }
+        for (var key in obj) {
+            var val = obj[key];
+            //newObj[key] = typeof val === 'object' ? arguments.callee(val) : val; //arguments.callee 在哪一个函数中运行，它就代表哪个函数, 一般用在匿名函数中。
+            newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
+        }
+        return newObj;
+    };
     /**
      *
      * 成员和方法
@@ -25,8 +48,15 @@
             var _self = this;
             this.targetOffset = this.$target_element.offset();
             this.$target_element.nameLabel = this.$target_element.attr("name");
+            this.$target_element.idLabel = this.$target_element.attr("id");
+            this.$target_element.checks = this.$target_element.attr("checks");
+            /*为了增加但页面应用的兼容性增加id属性*/
+            if (this.$target_element.idLabel === undefined || this.$target_element.idLabel === "") {
+                this.$target_element.idLabel = GenNonDuplicateID(3);
+            }
+
             if (this.$target_element.nameLabel === undefined || this.$target_element.nameLabel === "") {
-                throw ("you must set name label in bind element");
+                this.$target_element.nameLabel = GenNonDuplicateID(3);
             }
             this.$target_element.attr("name", this.options.textLabel === "" ? this.$target_element.nameLabel + "text" : this.options.textLabel);
             /*默认以当前元素为选项容器*/
@@ -52,10 +82,8 @@
             }
             if (v.length > 0) v = v.substring(0, v.length - 1);
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
-            if ("text" === type)
-                return v;
-            else
-                return rv;
+
+            return v;
         }
     }
     var bind_element_click_event = function () {
@@ -79,11 +107,13 @@
 
     }
     var init_tree_container = function () {
-        this.ztreeid = this.$target_element.nameLabel + "_zTree";
+        this.ztreeid = this.$target_element.idLabel + "_zTree";
         this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;" >' +
             '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; width:' + (this.$target_element.width() - getScrollWidth()) + '; height: 300px;"></ul>' +
-            '<input type="hidden" id="' + this.$target_element.nameLabel + 'id"   name="' + this.$target_element.nameLabel + '">' +
             '</div>').insertAfter(this.$target_element);
+
+        this.checked_val_element = $('<input type="hidden" name="' +
+            this.$target_element.nameLabel + '">').insertAfter(this.tree_container);
         return this;
     }
 
@@ -99,7 +129,25 @@
 
     var init_ztree = function () {
         var inner_$target_element = this.$target_element;
-        var inner_val_name = this.$target_element.nameLabel + 'id';
+        var inner_$checked_val_element = this.checked_val_element;
+        var inner_$checks = this.$target_element.checks;
+        ztreeonAsyncSuccess = function (event, treeId, treeNode, msg) {
+            zTreeObj.setting.callback.onCheck();
+        };
+        var initNodeCheckeState = function (checks, nodes) {
+            if (checks != "" && checks != undefined && checks != null) {
+               var checks_array= checks.split(',');
+                for (var i = 0; i < nodes.length; i++) {
+                    for(var t = 0; t < checks_array.length; t++){
+                        if ((""+nodes[i].id)===checks_array[t]) {
+                            nodes[i].checked = true
+                        }
+                    }
+
+                }
+            }
+            return nodes;
+        }
         var ztreeOnCheck = function (e, treeId, treeNode) {
 
             nodes = zTreeObj.getCheckedNodes(true),
@@ -112,8 +160,8 @@
             if (v.length > 0) v = v.substring(0, v.length - 1);
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
             inner_$target_element.val(v);
-            $("#" + inner_val_name).attr("value", rv);
-            /*  console.log($("#" + inner_val_name).val())*/
+            inner_$checked_val_element.attr("value", rv);
+            console.log(inner_$checked_val_element.val())
         }
         var setting = {
             check: {
@@ -129,10 +177,20 @@
                 }
             },
             callback: {
-                onCheck: ztreeOnCheck
+                onCheck: ztreeOnCheck,
+                onAsyncSuccess: ztreeonAsyncSuccess
             },
             async: this.options.async
+
         };
+        /*异步完成后设置初始选中的值*/
+        setting.async.dataFilter = function (treeId, parentNode, responseData) {
+            if (responseData) {
+                initNodeCheckeState(inner_$checks, responseData);
+            }
+            return responseData;
+        };
+        this.options.zNodes = initNodeCheckeState(inner_$checks, this.options.zNodes)
         var zTreeObj = $.fn.zTree.init($("#" + this.ztreeid), setting, this.options.zNodes);
         zTreeObj.setting.callback.onCheck();
         this.$zTreeObj = zTreeObj;

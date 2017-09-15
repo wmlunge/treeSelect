@@ -2,11 +2,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <html>
 <head>
-    <title>mutipleTreeDemo</title>
+    <title>$Title$</title>
     <link type="text/css" rel="stylesheet" href="css/demo.css">
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
-
-    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
     <script type="text/javascript" src="JasonMultipleTreeSelect.js"></script>
 
@@ -18,11 +17,11 @@
 
 
         var zNodes = [
-            {id: 1, pId: 0, name: "jason", checked: true, open: true},
-            {id: 11, pId: 1, name: "李苏红", open: true, checked: true},
-            {id: 111, pId: 11, name: "李蒙", nocheck: true},
+            {id: 1, pId: 0, name: "jason",   open: true},
+            {id: 11, pId: 1, name: "李苏红", open: true },
+            {id: 111, pId: 11, name: "李蒙" },
             {id: 112, pId: 11, name: "小黄"},
-            {id: 12, pId: 1, name: "小皇甫", nocheck: true, open: true},
+            {id: 12, pId: 1, name: "小皇甫" },
             {id: 121, pId: 12, name: "小陈伟"},
             {id: 122, pId: 12, name: "小姜姜"},
             {id: 2, pId: 0, name: "蒋丰", open: true},
@@ -34,35 +33,19 @@
         ];
         var defaults = {
             textLabel: "jasontext",
-             zNodes: zNodes, 
-            async: {
-                enable: false,
-                url:"http://localhost/smz/doubleRandom/drRandomArea!listAreaTree.do?selectID="
-            }
+            zNodes: zNodes
         }
 
         $(document).ready(function () {
-
-            $("#jsaontree").drawMultipleTree(defaults);
-			   $("#lisuhong").drawMultipleTree(defaults);
-			
+            $("textarea").drawMultipleTree(defaults);
         });
         //-->
-		function getvalue(type){
-			var cvalue=$("#jsaontree").drawMultipleTree('getChecks',type);
-			alert(cvalue);
-		}
     </script>
 </head>
 
 <body>
-<textarea id="jsaontree" style="width: 300px" name="dutyAreaNames"
-          type="text" readonly>
-                        </textarea>
-						<textarea id="lisuhong" style="width: 300px" name="lisuhong"
-          type="text" readonly>
-                        </textarea>
-<button onclick="getvalue('value')">获取选中的值</button>
-<button onclick="getvalue('text')">获取选中的文本</button>
+<textarea   style="width: 300px" checks="1,111,2" type="text" readonly></textarea>
+<textarea   style="width: 300px" checks="1,11,2,23"   type="text" readonly></textarea>
+
 </body>
 </html>
