@@ -95,14 +95,15 @@
 
         this.$target_element.click(function (event) {
             event.stopPropagation();
-            tree_container/*.css({
-                left: element_offset.left + "px",
-                top: element_offset.top + outerHeight + "px"
-            })*/.slideDown("fast");
+            if(!tree_container.is(':visible')){
+            tree_container.slideDown("fast");
+            }else{
+                tree_container.slideUp("fast");
+            }
         });
         /*同时给body绑定点击事件关闭树结构*/
         $(document).click(function () {
-            tree_container.fadeOut("fast");
+            tree_container.slideUp("fast");
         });
 
     }
