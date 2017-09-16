@@ -1,4 +1,4 @@
-﻿(function ($) {
+(function ($) {
     var $target_element;
     var defaults = {
         textLabel: "",
@@ -95,10 +95,10 @@
 
         this.$target_element.click(function (event) {
             event.stopPropagation();
-            tree_container.css({
+            tree_container/*.css({
                 left: element_offset.left + "px",
                 top: element_offset.top + outerHeight + "px"
-            }).slideDown("fast");
+            })*/.slideDown("fast");
         });
         /*同时给body绑定点击事件关闭树结构*/
         $(document).click(function () {
@@ -106,12 +106,14 @@
         });
 
     }
+    /*绘制容器和样式*/
     var init_tree_container = function () {
         this.ztreeid = this.$target_element.idLabel + "_zTree";
+        this.$target_element.css({display:'inline-block'});
+        this.all_container = this.$target_element.wrap('<div class="mts-container" />').parent();
         this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;" >' +
-            '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; width:' + (this.$target_element.width() - getScrollWidth()) + '; height: 300px;"></ul>' +
+            '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; width:' + (this.$target_element.width() - getScrollWidth()) + '; height: 300px;background-color: white"></ul>' +
             '</div>').insertAfter(this.$target_element);
-
         this.checked_val_element = $('<input type="hidden" name="' +
             this.$target_element.nameLabel + '">').insertAfter(this.tree_container);
         return this;
