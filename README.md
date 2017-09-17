@@ -14,8 +14,8 @@
 2. 然后给相应的元素在页面加载完成之后这样注册一下即可。后续会提供更多的api；推荐使用textarea来初始化<br>
  $(document).ready(function () {<br>
             $("#jsaontree").drawMultipleTree(defaults);<br>
- });<br>
- #二、异步请求方式实现
+ });
+#二、异步请求方式实现
  -------
    var defaults = {<br>
             textLabel: "text内容",<br>
