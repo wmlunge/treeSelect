@@ -1,12 +1,9 @@
 # MultipleTreeSelect.js
-用于处理低侵入的树形选择框业务。基于ztree实现
---------
-依赖jquery和ztree
----------
-支持谷歌，ie8+
-------
-使用方法为
----
+用于处理低侵入的树形选择框业务。基于ztree实现;<br>
+依赖jquery和ztree;<br>
+支持谷歌，ie8+;<br>
+一、非异步请求方式使用
+-------
 1.首先传入一个配置<br>
  var defaults = {<br>
             textLabel: "选中的text内容将作为此表单项提交",<br>
@@ -17,4 +14,13 @@
  $(document).ready(function () {<br>
             $("#jsaontree").drawMultipleTree(defaults);<br>
  });<br>
+ 二、异步请求方式实现<br>
+   var defaults = {<br>
+            textLabel: "text内容",<br>
+            async: {<br>
+                    enable: true,<br>
+                    url: "url"<br>
+                }<br>
+	    
+        }<br>
 联系邮箱35312@163.com
