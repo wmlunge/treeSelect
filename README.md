@@ -15,7 +15,7 @@
  $(document).ready(function () {<br>
             $("#jsaontree").drawMultipleTree(defaults);<br>
  });<br>
- 二、异步请求方式实现<br>
+ 二、异步请求方式实现
  -------
    var defaults = {<br>
             textLabel: "text内容",<br>
