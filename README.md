@@ -16,13 +16,11 @@
             $("#jsaontree").drawMultipleTree(defaults);<br>
  });
  # 二、异步请求方式实现
- -------
    var defaults = {<br>
             textLabel: "text内容",<br>
             async: {<br>
                     enable: true,<br>
                     url: "url"<br>
                 }<br>
-	    
         }<br>
 联系邮箱35312@163.com
