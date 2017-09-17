@@ -16,6 +16,7 @@
             $("#jsaontree").drawMultipleTree(defaults);<br>
  });<br>
  二、异步请求方式实现<br>
+ -------
    var defaults = {<br>
             textLabel: "text内容",<br>
             async: {<br>
