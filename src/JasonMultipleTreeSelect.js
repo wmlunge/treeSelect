@@ -23,7 +23,7 @@
     }
 
     function GenNonDuplicateID(randomLength) {
-        return Number(Math.random().toString().substr(3, randomLength) + Date.now()).toString(36)
+        return Number(Math.random().toString().substr(3, randomLength) +new Date().getTime()).toString(36)
     }
 
     var cloneObj = function (obj) {
@@ -110,8 +110,8 @@
     /*绘制容器和样式*/
     var init_tree_container = function () {
         this.ztreeid = this.$target_element.idLabel + "_zTree";
-        this.$target_element.css({display:'inline-block'});
-        this.all_container = this.$target_element.wrap('<div class="mts-container" />').parent();
+         this.$target_element.css({display:'block'});
+        this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block"/>').parent();
         this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;" >' +
             '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; width:' + (this.$target_element.width() - getScrollWidth()) + '; height: 300px;background-color: white"></ul>' +
             '</div>').insertAfter(this.$target_element);
@@ -164,7 +164,7 @@
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
             inner_$target_element.val(v);
             inner_$checked_val_element.attr("value", rv);
-            console.log(inner_$checked_val_element.val())
+
         }
         var setting = {
             check: {
