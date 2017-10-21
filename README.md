@@ -118,5 +118,5 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 ```
  
 
-**JasonMultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.com)**
+**JasonMultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.net)**
 
