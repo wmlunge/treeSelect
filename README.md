@@ -13,7 +13,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 
 **Jason 欢迎使用本插件: Jason**
 #### 示例图片：
-![image](https://github.com/PureCreek/MultipleTreeSelect.js/tree/master/src/demo/img/1.png)
+![image](MultipleTreeSelect.js/src/demo/img/1.png)
 #### 快速上手示例：
 
 **1. 引入jquery,ztree,JasonMultipleTreeSelect等js和css文件**
