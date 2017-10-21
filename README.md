@@ -92,7 +92,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 **3.配置文件详解**
 
 ```js
- var defaultsw = {
+ var settingAsync = {
              textLabel: "选中的文本在表单项中的name",
              async: {
                  enable: true,
