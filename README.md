@@ -13,7 +13,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 
 **Jason 欢迎使用本插件: Jason**
 #### 示例图片：
-![image](MultipleTreeSelect.js/src/demo/img/1.png)
+![image](https://github.com/PureCreek/MultipleTreeSelect.js/tree/master/src/demo/img/1.png)
 #### 快速上手示例：
 
 **1. 引入jquery,ztree,JasonMultipleTreeSelect等js和css文件**
@@ -77,24 +77,45 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 
 ```
 
-**2.异步加载实例**
+**2.异步加载配置实例**
 
 ```js
- 
+ var defaultsw = {
+             textLabel: "qtrxbText",
+             async: {
+                 enable: true,
+                 url: "http://qqxh.net"
+             }
+         }
 ```
 
 **3.配置文件详解**
 
 ```js
- 
+ var defaultsw = {
+             textLabel: "选中的文本在表单项中的name",
+             async: {
+                 enable: true,
+                 url: "异步加载url地址"
+             },
+             chkStyle: "radio",/*radio：单选模式，checkbox：多选模式，默认为多选*/
+             radioType : "all",/*all：整个树只能有一个选中，level：在每一级节点范围内当做一个分组*/
+             height:433,/*容器高度*/
+             callback:{
+                 onCheck: function() {}/*选中事件的回调*/
+             }
+         }
 ```
 
 **4.api列表**
-
+- 获取选中文本
 ```js
- 
+  $("#yourContentId").drawMultipleTree("getChecks","val");
 ```
-
+- 获取选中code
+```js
+  $("#yourContentId").drawMultipleTree(getChecks,"text");
+```
  
 
 **JasonMultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.com)**
