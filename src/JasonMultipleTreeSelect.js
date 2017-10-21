@@ -6,8 +6,15 @@
         async: {
             enable: false,
             url: ""
-        }
+        },
+        callback:{
+            onCheck: function () {
 
+            }
+        },
+        chkStyle: "checkbox"
+        ,radioType:"all",
+        height:'auto'
     }
 
     var DrawMultipleTree = function (target_element, options) {
@@ -83,7 +90,10 @@
             if (v.length > 0) v = v.substring(0, v.length - 1);
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
 
-            return v;
+            if("val"===type)
+                return rv;
+            if("text"===type)
+                return v;
         }
     }
     var bind_element_click_event = function () {
@@ -101,7 +111,7 @@
                 tree_container.slideUp("fast");
             }
         });
-        /*同时给body绑定点击事件关闭树结构*/
+        /*同时给body绑定点击事件关闭树结构额*/
         $(document).click(function () {
             tree_container.slideUp("fast");
         });
@@ -112,8 +122,8 @@
         this.ztreeid = this.$target_element.idLabel + "_zTree";
          this.$target_element.css({display:'block'});
         this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block"/>').parent();
-        this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;" >' +
-            '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; width:' + (this.$target_element.width() - getScrollWidth()) + '; height: 300px;background-color: white"></ul>' +
+        this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;z-index:110004" >' +
+            '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; height:'+this.options.height+'; width:' + (this.$target_element.width() - getScrollWidth()) + '; background-color: white"></ul>' +
             '</div>').insertAfter(this.$target_element);
         this.checked_val_element = $('<input type="hidden" name="' +
             this.$target_element.nameLabel + '">').insertAfter(this.tree_container);
@@ -134,6 +144,7 @@
         var inner_$target_element = this.$target_element;
         var inner_$checked_val_element = this.checked_val_element;
         var inner_$checks = this.$target_element.checks;
+       var callback_$oncheck = this.options.callback.onCheck;
         ztreeonAsyncSuccess = function (event, treeId, treeNode, msg) {
             zTreeObj.setting.callback.onCheck();
         };
@@ -164,12 +175,14 @@
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
             inner_$target_element.val(v);
             inner_$checked_val_element.attr("value", rv);
-
+            callback_$oncheck();
         }
         var setting = {
             check: {
                 enable: true,
-                chkboxType: {"Y": "", "N": ""}
+                chkboxType: {"Y": "", "N": ""},
+                chkStyle:this.options.chkStyle,
+                radioType:this.options.radioType
             },
             view: {
                 dblClickExpand: false
@@ -181,7 +194,12 @@
             },
             callback: {
                 onCheck: ztreeOnCheck,
-                onAsyncSuccess: ztreeonAsyncSuccess
+                onAsyncSuccess: ztreeonAsyncSuccess,
+                onClick: function (e, treeId, treeNode, clickFlag) {
+
+                    zTreeObj.checkNode(treeNode, !treeNode.checked, true);
+                    zTreeObj.setting.callback.onCheck();
+                }
             },
             async: this.options.async
 
@@ -205,19 +223,7 @@
         this.$target_element = $(target_element);
         this.$target_element.hide();
     }
-    /**
-     * 单选模式
-     * @param options
-     * @returns {*}
-     */
-    $.fn.drawNormalTree = function (options) {
 
-        return this.each(function () {
-            if (!$.data(this, 'drawTree')) {
-                $.data(this, 'drawTree', new DrawNormalTree(this, options));
-            }
-        });
-    };
     /**
      * 多选模式
      * @param options
