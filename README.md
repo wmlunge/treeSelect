@@ -111,11 +111,11 @@ MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，
 **4.api列表**
 - 获取选中文本<br>get selected text value
 ```js
-  $("#yourContentId").drawMultipleTree("getChecks","val");
+  $("#yourContentId").drawMultipleTree("getChecks","text");
 ```
 - 获取选中code<br>get selected code value
 ```js
-  $("#yourContentId").drawMultipleTree(getChecks,"text");
+  $("#yourContentId").drawMultipleTree(getChecks,"val");
 ```
  - 设置默认选中值<br>seting default selected
  <br><br>
