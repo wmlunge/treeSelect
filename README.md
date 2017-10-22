@@ -1,9 +1,8 @@
 ### jquery 树形下拉框插件
 
+MultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器
 
-JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器
-
-#### JasonMultipleTreeSelect.js有如下主要特点
+#### MultipleTreeSelect.js有如下主要特点
 - 体积小巧，大小只有4k
 - 兼容到ie8以及各大主流浏览器
 - 低侵入式使用
@@ -16,7 +15,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 ![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/1.png)
 #### 快速上手示例：
 
-**1. 引入jquery,ztree,JasonMultipleTreeSelect等js和css文件**
+**1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
 
 ```html
 <meta charset="UTF-8">
@@ -28,7 +27,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
-    <script type="text/javascript" src="JasonMultipleTreeSelect.js"></script>
+    <script type="text/javascript" src="MultipleTreeSelect.js"></script>
 
     <script>
 
@@ -120,5 +119,5 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
  <br><br>
  通过给元素设置checks属性来进行设置，格式为:checks="1,2,3,4,5"
 
-**JasonMultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.net)**
+**MultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.net)**
 
