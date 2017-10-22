@@ -99,7 +99,7 @@ MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，
                  enable: true,
                  url: "异步加载url地址"
              },
-             chkStyle: "radio",/*radio：单选模式，checkbox：多选模式，默认为多选*/
+             chkStyle: "radio",/*radio：单选模式(Radio mode)，checkbox：多选模式(checkbox mode)，默认为多选*/
              radioType : "all",/*all：整个树只能有一个选中，level：在每一级节点范围内当做一个分组*/
              height:433,/*容器高度*/
              callback:{
