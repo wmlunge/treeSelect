@@ -8,7 +8,7 @@
             url: ""
         },
         callback:{
-            onCheck: function () {
+            onCheck: function (treeNode) {
 
             }
         },
@@ -175,7 +175,7 @@
             if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
             inner_$target_element.val(v);
             inner_$checked_val_element.attr("value", rv);
-            callback_$oncheck();
+            callback_$oncheck(nodes);
         }
         var setting = {
             check: {
