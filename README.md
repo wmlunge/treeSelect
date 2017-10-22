@@ -1,20 +1,21 @@
-### jquery 树形下拉框插件(jquery tree drop box plugin)
+### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
 
-MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器
+MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
 (MultipleTreeSelect is an tree drop-down selection box plugin based on jquery and ztree ; support ie8 +, Google, Firefox, 360 and other browsers)
 
-#### MultipleTreeSelect有如下主要特点(has the following main features)
-- 体积小巧，大小只有4k(only 4k in size)
-- 兼容ie8以及各大主流浏览器(Compatible ie8 and the major mainstream browser)
-- 低侵入式使用(Low intrusion)
-- 使用简单方便(Easy to use)
-- 继承了ztree高效渲染(Efficient)
+#### MultipleTreeSelect有如下主要特点<br>(has the following main features)
+- 体积小巧，大小只有4k<br>(only 4k in size)
+- 兼容ie8以及各大主流浏览器<br>(Compatible ie8 and the major mainstream browser)
+- 低侵入式使用<br>(Low intrusion)
+- 使用简单方便<br>(Easy to use)
+- 继承了ztree高效渲染<br>(Efficient)
 
 
-**MultipleTreeSelect 欢迎使用本插件(Welcome to this plugin): MultipleTreeSelect**
-#### 示例图片(Example)：
+**MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
+<br>(Welcome to this plugin)
+#### 示例图片：<br>(Example:)
 ![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/1.png)
-#### 快速上手示例(Quick start example)：
+#### 快速上手示例<br>(Quick start example)：
 
 **1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
 
@@ -78,7 +79,7 @@ MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，
 ```
 
 **2.异步加载配置实例**
-
+<br>**async example**
 ```js
  var defaultsw = {
              textLabel: "qtrxbText",
@@ -89,8 +90,8 @@ MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，
          }
 ```
 
-**3.配置文件详解**
-
+**3.配置文件详解**<br>
+**setting file detailed explanation**
 ```js
  var settingAsync = {
              textLabel: "选中的文本在表单项中的name",
@@ -108,17 +109,19 @@ MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，
 ```
 
 **4.api列表**
-- 获取选中文本
+- 获取选中文本<br>get selected text value
 ```js
   $("#yourContentId").drawMultipleTree("getChecks","val");
 ```
-- 获取选中code
+- 获取选中code<br>get selected code value
 ```js
   $("#yourContentId").drawMultipleTree(getChecks,"text");
 ```
- - 设置默认选中值
+ - 设置默认选中值<br>seting default selected
  <br><br>
- 通过给元素设置checks属性来进行设置，格式为:checks="1,2,3,4,5"
+ 通过给元素设置checks属性来进行设置，格式为:checks="1,2,3,4,5"<br>
+ user  words  "cehcks"  to set selected values;
+ like:checks="1,2,3,4,5"
 
-**MultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.net)**
+**MultipleTreeSelect 开发者网站(my website)：[http://www.qqxh.net](http://www.qqxh.net)**
 
