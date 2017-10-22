@@ -7,7 +7,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 - 体积小巧，大小只有4k
 - 兼容到ie8以及各大主流浏览器
 - 低侵入式使用
-- 使用方便
+- 使用简单方便
 - 继承了ztree高效渲染
 
 
