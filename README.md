@@ -11,7 +11,7 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 - 继承了ztree高效渲染
 
 
-**Jason 欢迎使用本插件: Jason**
+**MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
 #### 示例图片：
 ![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/1.png)
 #### 快速上手示例：
@@ -116,7 +116,9 @@ JasonMultipleTreeSelect.js是基于jquery和ztree开发的树形下拉选择框�
 ```js
   $("#yourContentId").drawMultipleTree(getChecks,"text");
 ```
- 
+ - 设置默认选中值
+ <br><br>
+ 通过给元素设置checks属性来进行设置，格式为:checks="1,2,3,4,5"
 
 **JasonMultipleTreeSelect 开发者网站：[http://www.qqxh.net](http://www.qqxh.net)**
 
