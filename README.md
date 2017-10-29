@@ -54,15 +54,13 @@ MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，
             {id: 222, pId: 22, name: "勘九郎"},
             {id: 3, pId: 0, name: "水之国"},
             {id: 4, pId: 0, name: "土之国"}
-        ];
-        /*配置项*/
-        var defaults = {
-            textLabel: "jasontext",
-            zNodes: zNodes
-        }
+        ]; 
         /*注册下拉树方法也很简单*/
         $(document).ready(function () {
-            $("textarea").drawMultipleTree(defaults);
+            $("textarea").drawMultipleTree({
+            textLabel: "jasontext",
+            zNodes: zNodes
+        });
         });
         //-->
     </script>
