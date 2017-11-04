@@ -99,14 +99,14 @@
             if(!tree_container.is(':visible')){
                 tree_container.slideDown("fast");
             }else{
-                tree_container.slideUp("fast");
+                tree_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
             }
         });
         this.all_container. mouseleave(function () {
 
             if(tree_container.is(':visible') ){
-                console.log('out');
-                tree_container.slideUp("fast");
+
+                tree_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
             }
         });
         /*解决鼠标快速移动不兼容问题*/
