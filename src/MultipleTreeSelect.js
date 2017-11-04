@@ -146,6 +146,12 @@
        var callback_$oncheck = this.options.callback.onCheck;
         ztreeonAsyncSuccess = function (event, treeId, treeNode, msg) {
             zTreeObj.setting.callback.onCheck();
+            $('#'+treeId).find("a").mouseleave(function (event) {
+                event.stopPropagation();
+            });
+            $('#'+treeId).find("span").mouseleave(function (event) {
+                event.stopPropagation();
+            });
         };
         var initNodeCheckeState = function (checks, nodes) {
             if (checks != "" && checks != undefined && checks != null) {
