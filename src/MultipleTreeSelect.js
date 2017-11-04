@@ -40,7 +40,6 @@
         }
         for (var key in obj) {
             var val = obj[key];
-            //newObj[key] = typeof val === 'object' ? arguments.callee(val) : val; //arguments.callee 在哪一个函数中运行，它就代表哪个函数, 一般用在匿名函数中。
             newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
         }
         return newObj;
@@ -61,19 +60,16 @@
             if (this.$target_element.idLabel === undefined || this.$target_element.idLabel === "") {
                 this.$target_element.idLabel = GenNonDuplicateID(3);
             }
-
             if (this.$target_element.nameLabel === undefined || this.$target_element.nameLabel === "") {
                 this.$target_element.nameLabel = GenNonDuplicateID(3);
             }
             this.$target_element.attr("name", this.options.textLabel === "" ? this.$target_element.nameLabel + "text" : this.options.textLabel);
             /*默认以当前元素为选项容器*/
-
             /*初始化树容器*/
             this.init_tree_container = init_tree_container.call(this);
             this.init_ztree = init_ztree.call(this)
             /*给元素绑定点击事件*/
             bind_element_click_event.call(this)
-
             /*挂载树容器*/
 
         },
@@ -97,23 +93,28 @@
         }
     }
     var bind_element_click_event = function () {
-        var element_offset = this.$target_element.offset();
-        var outerHeight = this.$target_element.outerHeight();
-        var tree_container = this.tree_container.click(function (event) {
-            event.stopPropagation();
-        });
-
+        var tree_container = this.tree_container;
         this.$target_element.click(function (event) {
             event.stopPropagation();
             if(!tree_container.is(':visible')){
-            tree_container.slideDown("fast");
+                tree_container.slideDown("fast");
             }else{
                 tree_container.slideUp("fast");
             }
         });
-        /*同时给body绑定点击事件关闭树结构额*/
-        $(document).click(function () {
-            tree_container.slideUp("fast");
+        this.all_container. mouseleave(function () {
+
+            if(tree_container.is(':visible') ){
+                console.log('out');
+                tree_container.slideUp("fast");
+            }
+        });
+        /*解决鼠标快速移动不兼容问题*/
+        this.tree_container.find("a").mouseleave(function (event) {
+            event.stopPropagation();
+        });
+        this.tree_container.find("span").mouseleave(function (event) {
+            event.stopPropagation();
         });
 
     }
@@ -121,13 +122,12 @@
     var init_tree_container = function () {
         this.ztreeid = this.$target_element.idLabel + "_zTree";
          this.$target_element.css({display:'block'});
-        this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block;"/>').parent();
-        this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;z-index:110004;border: solid 1px;border-radius: 5px;" >' +
+        this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block;position: relative;"/>').parent();
+        this.tree_container = $('<div   class="menuContent" style="display:none;background-color: white; position: absolute;z-index:110004;border: solid 1px;border-radius: 5px;padding-bottom: 10px" >' +
             '<ul id="' + this.ztreeid + '" class="ztree" style="padding:0 0;margin-top:0;border: none;border-radius: 5px;  height:'+this.options.height+'; width:' +getelementwidth(this.$target_element) + '; background-color: white"></ul>' +
             '</div>').insertAfter(this.$target_element);
         this.checked_val_element = $('<input type="hidden" name="' +
             this.$target_element.nameLabel + '">').insertAfter(this.tree_container);
-
         $('#'+this.ztreeid).slimScroll({
             height: this.options.height,
             width:getelementwidth(this.$target_element)
@@ -139,16 +139,6 @@
 
         return element.outerWidth()-2;
     }
-/*    function getScrollWidth() {
-        var noScroll, scroll, oDiv = document.createElement("DIV");
-        oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
-        noScroll = document.body.appendChild(oDiv).clientWidth;
-        oDiv.style.overflowY = "scroll";
-        scroll = oDiv.clientWidth;
-        document.body.removeChild(oDiv);
-        return noScroll - scroll;
-    }*/
-
     var init_ztree = function () {
         var inner_$target_element = this.$target_element;
         var inner_$checked_val_element = this.checked_val_element;
@@ -248,9 +238,7 @@
                 $.data(this, 'drawMultipleTree', new DrawMultipleTree(this, options));
             }
             if (typeof option === 'string') {
-                /*if ($.inArray(option, allowedMethods) < 0) {
-                    throw 'Unknown method: ' + option;
-                }*/
+
                 value = data[option](args[1]);
 
             }
