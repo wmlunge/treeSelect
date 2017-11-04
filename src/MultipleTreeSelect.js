@@ -121,16 +121,25 @@
     var init_tree_container = function () {
         this.ztreeid = this.$target_element.idLabel + "_zTree";
          this.$target_element.css({display:'block'});
-        this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block"/>').parent();
-        this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;z-index:110004" >' +
-            '<ul id="' + this.ztreeid + '" class="ztree" style="margin-top:0; height:'+this.options.height+'; width:' + (this.$target_element.width() - getScrollWidth()) + '; background-color: white"></ul>' +
+        this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block;"/>').parent();
+        this.tree_container = $('<div   class="menuContent" style="display:none; position: absolute;z-index:110004;border: solid 1px;border-radius: 5px;" >' +
+            '<ul id="' + this.ztreeid + '" class="ztree" style="padding:0 0;margin-top:0;border: none;border-radius: 5px;  height:'+this.options.height+'; width:' +getelementwidth(this.$target_element) + '; background-color: white"></ul>' +
             '</div>').insertAfter(this.$target_element);
         this.checked_val_element = $('<input type="hidden" name="' +
             this.$target_element.nameLabel + '">').insertAfter(this.tree_container);
+
+        $('#'+this.ztreeid).slimScroll({
+            height: this.options.height,
+            width:getelementwidth(this.$target_element)
+        });
+
         return this;
     }
+    function getelementwidth(element){
 
-    function getScrollWidth() {
+        return element.outerWidth()-2;
+    }
+/*    function getScrollWidth() {
         var noScroll, scroll, oDiv = document.createElement("DIV");
         oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
         noScroll = document.body.appendChild(oDiv).clientWidth;
@@ -138,7 +147,7 @@
         scroll = oDiv.clientWidth;
         document.body.removeChild(oDiv);
         return noScroll - scroll;
-    }
+    }*/
 
     var init_ztree = function () {
         var inner_$target_element = this.$target_element;

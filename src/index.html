@@ -5,9 +5,11 @@
     <title>$Title$</title>
     <link type="text/css" rel="stylesheet" href="css/demo.css">
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
+
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
     <script type="text/javascript" src="MultipleTreeSelect.js"></script>
+    <script type="text/javascript" src="js/jquery.slimscroll.min.js"></script>
 
     <script>
 
@@ -36,7 +38,7 @@
         var defaults = {
             textLabel: "jasontext",
             zNodes: zNodes,
-            height:433
+            height:233
         }
 
         $(document).ready(function () {
@@ -48,7 +50,8 @@
 
 <body >
 <br>
-<textarea   style="width: 300px" checks="1,11,2,23"   type="text" readonly></textarea>
-<textarea   style="width: 300px" checks="1,11,2,23,4,3"   type="text" readonly></textarea>
+<textarea   style="width: 300px;overflow:hidden;" checks="1,11,2,23"   type="text" readonly></textarea>
+<textarea   style="width: 300px;overflow:hidden" checks="1,11,2,23,4,3"   type="text" readonly></textarea>
+
 </body>
 </html>
