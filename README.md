@@ -1,10 +1,9 @@
 ### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
 
-MultipleTreeSelect是基于jquery和ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
+MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
 (MultipleTreeSelect is an tree drop-down selection box plugin based on jquery and ztree ; support ie8 +, Google, Firefox, 360 and other browsers)
 
 #### MultipleTreeSelect有如下主要特点<br>(has the following main features)
-- 体积小巧，大小只有4k<br>(only 4k in size)
 - 兼容ie8以及各大主流浏览器<br>(Compatible ie8 and the major mainstream browser)
 - 低侵入式使用<br>(Low intrusion)
 - 使用简单方便<br>(Easy to use)
