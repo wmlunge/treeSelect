@@ -13,7 +13,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
 <br>(Welcome to this plugin)
 #### 示例图片：<br>(Example:)
-![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/1.png)
+![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/2.png)
 #### 快速上手示例<br>(Quick start example)：
 
 **1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
