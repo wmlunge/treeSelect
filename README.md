@@ -15,7 +15,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 #### 多选示例图片：<br>(Checkbox Example:)
 ![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/2.png)
 #### 单选选示例图片：<br>(Radio Example:)
-![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/2.png)
+![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/3.png)
 #### 快速上手示例<br>(Quick start example)：
 
 **1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
