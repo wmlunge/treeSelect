@@ -10,7 +10,7 @@
 (function ($) {
     var $target_element;
     var defaults = {
-        textLabel: "",
+      /*  textLabel: "",*/
         zNodes: [],
         async: {
             enable: false,
@@ -65,6 +65,7 @@
             this.$target_element.nameLabel = this.$target_element.attr("name");
             this.$target_element.idLabel = this.$target_element.attr("id");
             this.$target_element.checks = this.$target_element.attr("checks");
+            this.$target_element.textLabel = this.$target_element.attr("textLabel");
             /*为了增加但页面应用的兼容性增加id属性*/
             if (this.$target_element.idLabel === undefined || this.$target_element.idLabel === "") {
                 this.$target_element.idLabel = GenNonDuplicateID(3);
@@ -72,7 +73,7 @@
             if (this.$target_element.nameLabel === undefined || this.$target_element.nameLabel === "") {
                 this.$target_element.nameLabel = GenNonDuplicateID(3);
             }
-            this.$target_element.attr("name", this.options.textLabel === "" ? this.$target_element.nameLabel + "text" : this.options.textLabel);
+            this.$target_element.attr("name",  this.$target_element.textLabel === "" ? this.$target_element.nameLabel + "text" :  this.$target_element.textLabel);
             /*默认以当前元素为选项容器*/
             /*初始化树容器*/
             this.init_tree_container = init_tree_container.call(this);

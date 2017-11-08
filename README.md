@@ -59,7 +59,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
         /*注册下拉树方法也很简单*/
         $(document).ready(function () {
             $("textarea").drawMultipleTree({
-            textLabel: "jasontext",
+            
             zNodes: zNodes
         });
         });
@@ -70,7 +70,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 <body style= "width: 1080px ;margin: 0 auto" >
 <br>
 <!--在此元素上进行渲染下拉树-->
-<textarea   style="width: 300px" checks="1,11,2,23"   type="text" readonly></textarea>
+<textarea   style="width: 300px" checks="1,11,2,23"  textLabel: "jasontext"  type="text" readonly></textarea>
 
 </body>
 </html>
@@ -81,7 +81,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 <br>**async example**
 ```js
  var defaultsw = {
-             textLabel: "qtrxbText",
+              
              async: {
                  enable: true,
                  url: "http://qqxh.net"
@@ -93,7 +93,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **setting file detailed explanation**
 ```js
  var settingAsync = {
-             textLabel: "选中的文本在表单项中的name",
+             
              async: {
                  enable: true,
                  url: "异步加载url地址"
@@ -121,6 +121,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
  通过给元素设置checks属性来进行设置，格式为:checks="1,2,3,4,5"<br>
  user  words  "cehcks"  to set selected values;
  like:checks="1,2,3,4,5"
-
+  - 设置文本的表单项<br>seting textLabel  
+ 通过textLabel属性设置文本在的表单项中的name属性；提交时将以该名称把文本提交到后台
 **MultipleTreeSelect 开发者网站(my website)：[http://www.qqxh.net](http://www.qqxh.net)**
 
