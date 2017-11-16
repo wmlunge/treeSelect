@@ -124,5 +124,5 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
   - 设置文本的表单项<br>seting textLabel  
  通过textLabel属性设置文本在的表单项中的name属性；提交时将以该名称把文本提交到后台
  <br>
-**MultipleTreeSelect 开发者网站(my website)：[http://www.qqxh.net](http://www.qqxh.net)**
+**MultipleTreeSelect 开发者网站(my website)：[http://www.qqxh.net]**
 
