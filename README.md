@@ -67,8 +67,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
     </script>
 </head>
 
-<body style= "width: 1080px ;margin: 0 auto" >
-<br>
+<body style= "width: 1080px ;margin: 0 auto" ><br>
 <!--在此元素上进行渲染下拉树-->
 <textarea   style="width: 300px" checks="1,11,2,23"  textLabel: "jasontext"  type="text" readonly></textarea>
 
@@ -124,5 +123,5 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
   - 设置文本的表单项<br>seting textLabel  
  通过textLabel属性设置文本在的表单项中的name属性；提交时将以该名称把文本提交到后台
  <br>
-**MultipleTreeSelect 开发者网站(my website):[http://www.qqxh.net](http://www.qqxh.net)**
+**MultipleTreeSelect 开发者网站(my website):[http://www.qqxh.net](http://www.qqxh.net)
 
