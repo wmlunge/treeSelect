@@ -1,7 +1,5 @@
 (function ($) {
-    var $target_element;
     var defaults = {
-        /*  textLabel: "",*/
         zNodes: [],
         async: {
             enable: false,
@@ -9,74 +7,38 @@
         },
         callback: {
             onCheck: function (treeNode) {
-
+                console.log(treeNode)
             }
         },
-        chkStyle: "checkbox"
-        , radioType: "all",
+        chkStyle: "checkbox",
+        radioType: "all",
         height: 'auto'
     }
-
     var DrawMultipleTree = function (target_element, options) {
-        this.$target_element = $(target_element);
-        _self = this;
+        this.$el = $(target_element);
+        var _this = this;
 
         var $options = function () {
-            return $.extend({}, defaults, options, _self.$target_element.data());//合并业务数据
+            return $.extend({}, defaults, options, _this.$el.data());//合并业务数据
         }
         /*避免共用同一个配置时两边干扰*/
-        this.options = cloneObj(new $options());
+        this.options = this.cloneObj(new $options());
         this.init();
     }
-
-
-    var cloneObj = function (obj) {
-        var newObj = {};
-        if (obj instanceof Array) {
-            newObj = [];
-        }
-        for (var key in obj) {
-            var val = obj[key];
-            newObj[key] = typeof val === 'object' ? cloneObj(val) : val;
-        }
-        return newObj;
-    };
-    /**
-     *
-     * 成员和方法
-     */
     DrawMultipleTree.prototype = {
         constructor: DrawMultipleTree,
         init: function () {
-            var _self = this;
-            this.targetOffset = this.$target_element.offset();
-            this.$target_element.nameLabel = this.$target_element.attr("name");
-            this.$target_element.idLabel = this.$target_element.attr("id");
-            this.$target_element.checks = this.$target_element.attr("checks");
-            this.$target_element.textLabel = this.$target_element.attr("textLabel");
-            /*为了增加但页面应用的兼容性增加id属性*/
-            if (this.$target_element.idLabel === undefined || this.$target_element.idLabel === "") {
-                this.$target_element.idLabel = this.genNonDuplicateID(3);
-            }
-            if (this.$target_element.nameLabel === undefined || this.$target_element.nameLabel === "") {
-                this.$target_element.nameLabel = this.genNonDuplicateID(3);
-            }
-            this.$target_element.attr("name", this.$target_element.textLabel === "" ? this.$target_element.nameLabel + "text" : this.$target_element.textLabel);
-            /*默认以当前元素为选项容器*/
-            /*初始化树容器*/
-            this.init_tree_container = this.init_tree_container();
-            this.init_ztree = this.init_ztree()
-            /*给元素绑定点击事件*/
-            this.bind_element_click_event()
-            /*挂载树容器*/
-
+            this.$el.checks = this.$el.attr("checks");
+            this.buildingDOM();
+            this.initTree()
+            this.bindEvent()
         },
         /*获取选中的选项*/
         getChecks: function (type) {
-            var zTreeObj = this.$zTreeObj
-            nodes = zTreeObj.getCheckedNodes(true),
-                v = "";
-            rv = "";
+            var zTreeObj = this.$zTreeObj,
+                nodes = zTreeObj.getCheckedNodes(true),
+                v = "",
+                rv = "";
             for (var i = 0, l = nodes.length; i < l; i++) {
                 v += nodes[i].name + ",";
                 rv += nodes[i].id + ",";
@@ -91,30 +53,29 @@
         },
         genNonDuplicateID: function (randomLength) {
             return Number(Math.random().toString().substr(3, randomLength) + new Date().getTime()).toString(36)
-        }
-        ,
-        bind_element_click_event: function () {
-            var tree_container = this.tree_container;
-            this.$target_element.click(function (event) {
+        },
+        bindEvent: function () {
+            var dropdown_container = this.dropdown_container;
+            this.$el.click(function (event) {
                 event.stopPropagation();
-                if (!tree_container.is(':visible')) {
-                    tree_container.slideDown("fast");
+                if (!dropdown_container.is(':visible')) {
+                    dropdown_container.slideDown("fast");
                 } else {
-                    tree_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
+                    dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
                 }
             });
-            this.all_container.mouseleave(function () {
+            this.container.mouseleave(function () {
 
-                if (tree_container.is(':visible')) {
+                if (dropdown_container.is(':visible')) {
 
-                    tree_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
+                    dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
                 }
             });
             /*解决鼠标快速移动不兼容问题*/
-            this.tree_container.find("a").mouseleave(function (event) {
+            this.dropdown_container.find("a").mouseleave(function (event) {
                 event.stopPropagation();
             });
-            this.tree_container.find("span").mouseleave(function (event) {
+            this.dropdown_container.find("span").mouseleave(function (event) {
                 event.stopPropagation();
             });
             this.searchTime = null;
@@ -141,67 +102,37 @@
 
             });
         },
-        init_tree_container: function () {
-            this.ztreeid = this.$target_element.idLabel + "_zTree";
-            this.$target_element.css({display: 'block'});
-            this.all_container = this.$target_element.wrap('<div class="mts-container" style="inline-block;position: relative;"/>').parent();
-            this.tree_container =
-                $('<div   class="menuContent" style="display:none;background-color: white; position: absolute;z-index:110004;border: solid 1px;border-radius: 5px;padding-bottom: 10px" >'
-                    +
-                    '<input class="searchInput" type="text" style="margin-top: 4px;border-radius:3px;width: ' + this.getelementwidth(this.$target_element) + '"><ul id="' + this.ztreeid + '" class="ztree" style="padding:0 0;margin-top:0;border: none;border-radius: 5px;  height:' + this.options.height + '; width:' + this.getelementwidth(this.$target_element) + '; background-color: white"></ul>' +
-                    '</div>').insertAfter(this.$target_element);
-            this.checked_val_element = $('<input type="hidden" name="' +
-                this.$target_element.nameLabel + '">').insertAfter(this.tree_container);
-            this.searchInput = $(".searchInput");
-            return this;
+        buildingDOM: function () {
+            this.ztreeid = this.genNonDuplicateID(3) + "_zTree";
+            this.$el.css({display: 'block'});
+            this.container = this.$el.wrap('<div class="mts-container" style="inline-block;position: relative;"/>').parent();
+            this.searchInput = $('<input class="searchInput" type="text" style="margin-top: 4px;border-radius:3px;width: ' + this.getelementwidth(this.$el) + '">');
+            this.tree_el = $('<ul id="' + this.ztreeid + '" class="ztree" style="padding:0 0;margin-top:0;border: none;border-radius: 5px;  height:' + this.options.height + '; width:' + this.getelementwidth(this.$el) + '; background-color: white"></ul>');
+            this.dropdown_container = $('<div   class="menuContent" style="display:none;background-color: white; position: absolute;z-index:110004;border: solid 1px;border-radius: 5px;padding-bottom: 10px" ></div>');
+            this.dropdown_container.append(this.searchInput);
+            this.dropdown_container.append(this.tree_el);
+            this.container.append(this.dropdown_container);
+            return this.container;
         },
         getelementwidth: function (element) {
             return element.outerWidth() - 2;
-        }
-        ,
-        init_ztree: function () {
-            var inner_$target_element = this.$target_element;
-            var inner_$checked_val_element = this.checked_val_element;
-            var inner_$checks = this.$target_element.checks;
-            var callback_$oncheck = this.options.callback.onCheck;
-            ztreeonAsyncSuccess = function (event, treeId, treeNode, msg) {
-                zTreeObj.setting.callback.onCheck();
-                $('#' + treeId).find("a").mouseleave(function (event) {
-                    event.stopPropagation();
-                });
-                $('#' + treeId).find("span").mouseleave(function (event) {
-                    event.stopPropagation();
-                });
-            };
-            var initNodeCheckeState = function (checks, nodes) {
-                if (checks != "" && checks != undefined && checks != null) {
-                    var checks_array = checks.split(',');
-                    for (var i = 0; i < nodes.length; i++) {
-                        for (var t = 0; t < checks_array.length; t++) {
-                            if (("" + nodes[i].id) === checks_array[t]) {
-                                nodes[i].checked = true
-                            }
+        },
+        initDeafaultCheckedStatus: function (nodes) {
+            var defaultChecks = this.$el.checks;
+            if (defaultChecks != "" && defaultChecks != undefined && defaultChecks != null) {
+                var checks_array = defaultChecks.split(',');
+                for (var i = 0; i < nodes.length; i++) {
+                    for (var t = 0; t < checks_array.length; t++) {
+                        if (("" + nodes[i].id) === checks_array[t]) {
+                            nodes[i].checked = true
                         }
-
                     }
                 }
                 return nodes;
             }
-            var ztreeOnCheck = function (e, treeId, treeNode) {
-
-                nodes = zTreeObj.getCheckedNodes(true),
-                    v = "";
-                rv = "";
-                for (var i = 0, l = nodes.length; i < l; i++) {
-                    v += nodes[i].name + ",";
-                    rv += nodes[i].id + ",";
-                }
-                if (v.length > 0) v = v.substring(0, v.length - 1);
-                if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
-                inner_$target_element.val(v);
-                inner_$checked_val_element.attr("value", rv);
-                callback_$oncheck(nodes);
-            }
+        },
+        initTree: function () {
+            var _this = this;
             var setting = {
                 check: {
                     enable: true,
@@ -218,37 +149,69 @@
                     }
                 },
                 callback: {
-                    onCheck: ztreeOnCheck,
-                    onAsyncSuccess: ztreeonAsyncSuccess,
+                    onCheck: _this.onCheck.bind(_this),
+                    onAsyncSuccess: _this.onAsyncSuccess.bind(_this),
                     onClick: function (e, treeId, treeNode, clickFlag) {
-
-                        zTreeObj.checkNode(treeNode, !treeNode.checked, true);
-                        zTreeObj.setting.callback.onCheck();
+                        _this.$zTreeObj.checkNode(treeNode, !treeNode.checked, true);
+                        _this.onCheck();
                     }
                 },
                 async: this.options.async
-
             };
             /*异步完成后设置初始选中的值*/
             setting.async.dataFilter = function (treeId, parentNode, responseData) {
                 if (responseData) {
-                    initNodeCheckeState(inner_$checks, responseData);
+                    _this.initDeafaultCheckedStatus(responseData);
                 }
                 return responseData;
             };
-            this.options.zNodes = initNodeCheckeState(inner_$checks, this.options.zNodes)
-            var zTreeObj = $.fn.zTree.init($("#" + this.ztreeid), setting, this.options.zNodes);
-            zTreeObj.setting.callback.onCheck();
-            this.$zTreeObj = zTreeObj;
-            return this
-
+            this.options.zNodes = _this.initDeafaultCheckedStatus(this.options.zNodes)
+            this.$zTreeObj = $.fn.zTree.init(this.tree_el, setting, this.options.zNodes);
+            this.onCheck();
+            return this;
+        },
+        onCheck: function (e, treeId, treeNode) {
+            this.m2v();
+            this.options.callback.onCheck(this);
+        },
+        m2v: function () {
+            var nodes = this.$zTreeObj.getCheckedNodes(true),
+                text = "",
+                codes = "";
+            for (var i = 0, l = nodes.length; i < l; i++) {
+                text += nodes[i].name + ",";
+                codes += nodes[i].id + ",";
+            }
+            if (text.length > 0) {
+                text = text.substring(0, text.length - 1);
+            }
+            if (codes.length > 0) {
+                codes = codes.substring(0, codes.length - 1);
+            }
+            this.$el.val(text);
+            this.$el.attr("codes", codes);
+        },
+        onAsyncSuccess: function (event, treeId, treeNode, msg) {
+            this.m2v();
+            this.tree_el.find("a").mouseleave(function (event) {
+                event.stopPropagation();
+            });
+            this.tree_el.find("span").mouseleave(function (event) {
+                event.stopPropagation();
+            });
+        },
+        cloneObj: function (obj) {
+            var newObj = {};
+            if (obj instanceof Array) {
+                newObj = [];
+            }
+            for (var key in obj) {
+                var val = obj[key];
+                newObj[key] = typeof val === 'object' ? this.cloneObj(val) : val;
+            }
+            return newObj;
         }
     }
-    /**
-     * 多选模式
-     * @param options
-     * @returns {*}
-     */
     $.fn.drawMultipleTree = function (options) {
         var option = arguments[0], value
         args = arguments;
@@ -259,9 +222,7 @@
                 $.data(this, 'drawMultipleTree', new DrawMultipleTree(this, options));
             }
             if (typeof option === 'string') {
-
                 value = data[option](args[1]);
-
             }
 
         });
