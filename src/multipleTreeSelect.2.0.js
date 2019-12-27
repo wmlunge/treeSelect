@@ -51,9 +51,6 @@
             if ("text" === type)
                 return v;
         },
-        genNonDuplicateID: function (randomLength) {
-            return Number(Math.random().toString().substr(3, randomLength) + new Date().getTime()).toString(36)
-        },
         bindEvent: function () {
             var dropdown_container = this.dropdown_container;
             this.$el.click(function (event) {
@@ -103,12 +100,11 @@
             });
         },
         buildingDOM: function () {
-            this.ztreeid = this.genNonDuplicateID(3) + "_zTree";
             this.$el.css({display: 'block'});
-            this.container = this.$el.wrap('<div class="mts-container" style="inline-block;position: relative;"/>').parent();
-            this.searchInput = $('<input class="searchInput" type="text" style="margin-top: 4px;border-radius:3px;width: ' + this.getelementwidth(this.$el) + '">');
-            this.tree_el = $('<ul id="' + this.ztreeid + '" class="ztree" style="padding:0 0;margin-top:0;border: none;border-radius: 5px;  height:' + this.options.height + '; width:' + this.getelementwidth(this.$el) + '; background-color: white"></ul>');
-            this.dropdown_container = $('<div   class="menuContent" style="display:none;background-color: white; position: absolute;z-index:110004;border: solid 1px;border-radius: 5px;padding-bottom: 10px" ></div>');
+            this.container = this.$el.wrap('<div class="mts-container"/>').parent();
+            this.searchInput = $('<input class="searchInput" type="text" style="width: ' + this.getelementwidth(this.$el) + '">');
+            this.tree_el = $('<ul   class="ztree" style="height:' + this.options.height + '; width:' + this.getelementwidth(this.$el)+';"></ul>');
+            this.dropdown_container = $('<div   class="menuContent"  ></div>');
             this.dropdown_container.append(this.searchInput);
             this.dropdown_container.append(this.tree_el);
             this.container.append(this.dropdown_container);
