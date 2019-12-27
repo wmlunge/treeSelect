@@ -7,14 +7,14 @@
         },
         callback: {
             onCheck: function (treeNode) {
-                console.log(treeNode)
             }
         },
+        checks: [],
         chkStyle: "checkbox",
         radioType: "all",
         height: 'auto'
     }
-    var DrawMultipleTree = function (target_element, options) {
+    var MultipleSelect = function (target_element, options) {
         this.$el = $(target_element);
         var _this = this;
 
@@ -25,31 +25,53 @@
         this.options = this.cloneObj(new $options());
         this.init();
     }
-    DrawMultipleTree.prototype = {
-        constructor: DrawMultipleTree,
+    MultipleSelect.prototype = {
+        constructor: MultipleSelect,
         init: function () {
-            this.$el.checks = this.$el.attr("checks");
+            var elChecks = this.$el.attr("checks");
+            if (!this.options.checks) {
+                this.options.checks = [];
+            }
+            if (elChecks != "" && elChecks != undefined && elChecks != null) {
+                this.options.checks = $.merge(this.options.checks, elChecks.split(','));
+            }
             this.buildingDOM();
             this.initTree()
             this.bindEvent()
         },
-        /*获取选中的选项*/
-        getChecks: function (type) {
-            var zTreeObj = this.$zTreeObj,
-                nodes = zTreeObj.getCheckedNodes(true),
-                v = "",
-                rv = "";
-            for (var i = 0, l = nodes.length; i < l; i++) {
-                v += nodes[i].name + ",";
-                rv += nodes[i].id + ",";
+        val: function (ids) {
+            var nodes = this.$zTreeObj.getCheckedNodes(true);
+            if (!ids) {
+                var ids = [];
+                $(nodes).each(function (index, node) {
+                    ids.push(node.id);
+                })
+                return ids;
+            } else {
+                /*赋值*/
+                var _this = this;
+                this.options.checks = ids;
+                $(nodes).each(function (index, node) {
+                    node.checked = false;
+                    _this.$zTreeObj.updateNode(node);
+                })
+                $(ids).each(function (index, id) {
+                    var node = _this.$zTreeObj.getNodeByParam("id", id);
+                    node.checked = true;
+                    _this.$zTreeObj.updateNode(node);
+                });
+                _this.m2v();
+                return this;
             }
-            if (v.length > 0) v = v.substring(0, v.length - 1);
-            if (rv.length > 0) rv = rv.substring(0, rv.length - 1);
 
-            if ("val" === type)
-                return rv;
-            if ("text" === type)
-                return v;
+        },
+        text: function () {
+            var nodes = this.$zTreeObj.getCheckedNodes(true);
+            var texts = [];
+            $(nodes).each(function (index, node) {
+                texts.push(node.name);
+            })
+            return texts;
         },
         bindEvent: function () {
             var dropdown_container = this.dropdown_container;
@@ -114,18 +136,31 @@
             return (element.outerWidth() - 2) + "px";
         },
         initDeafaultCheckedStatus: function (nodes) {
-            var defaultChecks = this.$el.checks;
-            if (defaultChecks != "" && defaultChecks != undefined && defaultChecks != null) {
-                var checks_array = defaultChecks.split(',');
-                for (var i = 0; i < nodes.length; i++) {
-                    for (var t = 0; t < checks_array.length; t++) {
-                        if (("" + nodes[i].id) === checks_array[t]) {
-                            nodes[i].checked = true
+            var _this = this;
+            var needUpdateNodes = []
+            if (this.options.checks && this.options.checks.length > 0) {
+                $(nodes).each(function (index, node) {
+                    var checkFlag = false;
+                    $(_this.options.checks).each(function (i, id) {
+                        if (id == node.id) {
+                            checkFlag = true;
+                            if (node.checked != true) {
+                                node.checked = true;
+                                needUpdateNodes.push(node);
+                            }
+                            return false;
+                        }
+                    });
+                    if (!checkFlag) {
+                        if (node.checked != false) {
+                            node.checked = false;
+                            needUpdateNodes.push(node)
                         }
                     }
-                }
-                return nodes;
+                });
             }
+            return needUpdateNodes;
+
         },
         initTree: function () {
             var _this = this;
@@ -161,7 +196,7 @@
                 }
                 return responseData;
             };
-            this.options.zNodes = _this.initDeafaultCheckedStatus(this.options.zNodes)
+            _this.initDeafaultCheckedStatus(this.options.zNodes)
             this.$zTreeObj = $.fn.zTree.init(this.tree_el, setting, this.options.zNodes);
             this.onCheck();
             return this;
@@ -208,20 +243,17 @@
             return newObj;
         }
     }
-    $.fn.drawMultipleTree = function (options) {
-        var option = arguments[0], value
-        args = arguments;
+    $.fn.multipleSelect = function (options) {
+        var resultArr = [];
         this.each(function () {
             var $this = $(this);
-            data = $this.data('drawMultipleTree')
-            if (!data) {
-                $.data(this, 'drawMultipleTree', new DrawMultipleTree(this, options));
+            var multipleTreeObj = $this.data('multipleSelect');
+            if (!multipleTreeObj) {
+                multipleTreeObj = new MultipleSelect(this, options);
+                $.data(this, 'multipleSelect', multipleTreeObj);
             }
-            if (typeof option === 'string') {
-                value = data[option](args[1]);
-            }
-
+            resultArr.push(multipleTreeObj);
         });
-        return typeof value !== 'undefined' ? value : this;
+        return resultArr.length == 1 ? resultArr[0] : resultArr;
     };
 })(jQuery)
