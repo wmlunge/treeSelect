@@ -69,7 +69,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 
 <body style= "width: 1080px ;margin: 0 auto" ><br>
 <!--在此元素上进行渲染下拉树-->
-<textarea   style="width: 300px" checks="1,11,2,23"  textLabel: "jasontext"  type="text" readonly></textarea>
+<textarea   style="width: 300px" checks="1,11,2,23"  type="text" readonly></textarea>
 
 </body>
 </html>
