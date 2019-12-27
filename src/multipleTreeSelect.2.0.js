@@ -103,7 +103,7 @@
             this.$el.css({display: 'block'});
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
             this.searchInput = $('<input class="searchInput" type="text" style="width: ' + this.getelementwidth(this.$el) + '">');
-            this.tree_el = $('<ul   class="ztree" style="height:' + this.options.height + '; width:' + this.getelementwidth(this.$el)+';"></ul>');
+            this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + this.getelementwidth(this.$el) + ';"></ul>');
             this.dropdown_container = $('<div   class="menuContent"  ></div>');
             this.dropdown_container.append(this.searchInput);
             this.dropdown_container.append(this.tree_el);
@@ -111,7 +111,7 @@
             return this.container;
         },
         getelementwidth: function (element) {
-            return element.outerWidth() - 2;
+            return (element.outerWidth() - 2) + "px";
         },
         initDeafaultCheckedStatus: function (nodes) {
             var defaultChecks = this.$el.checks;
