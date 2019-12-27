@@ -13,9 +13,9 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
 <br>(Welcome to this plugin)
 #### 多选示例图片：<br>(Checkbox Example:)
-![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/2.png)
+![demo](https://images.gitee.com/uploads/images/2019/1228/000428_5fea50f1_2042758.png)
 #### 单选选示例图片：<br>(Radio Example:)
-![demo](https://github.com/PureCreek/MultipleTreeSelect.js/raw/master/src/demo/img/3.png)
+![demo](https://images.gitee.com/uploads/images/2019/1228/000429_c3cbd7f9_2042758.png)
 #### 快速上手示例<br>(Quick start example)：
 
 **1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
@@ -30,7 +30,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
-    <script type="text/javascript" src="MultipleTreeSelect.js"></script>
+    <script type="text/javascript" src="multipleTreeSelect.2.0.js"></script>
 
     <script>
 
@@ -79,8 +79,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **2.异步加载配置实例**
 <br>**async example**
 ```js
- var defaultsw = {
-              
+ var options = {
              async: {
                  enable: true,
                  url: "http://qqxh.net"
@@ -91,7 +90,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **3.配置文件详解**<br>
 **setting file detailed explanation**
 ```js
- var settingAsync = {
+ var options = {
              
              async: {
                  enable: true,
@@ -99,7 +98,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
              },
              chkStyle: "radio",/*radio：单选模式(Radio mode)，checkbox：多选模式(checkbox mode)，默认为多选*/
              radioType : "all",/*all：整个树只能有一个选中，level：在每一级节点范围内当做一个分组*/
-             height:433,/*容器高度*/
+             height:433,/*容器高度默认200px*/
              callback:{
                  onCheck: function() {}/*选中事件的回调*/
              }
@@ -117,11 +116,15 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 ```
  - 设置默认选中值<br>seting default selected
  <br><br>
- 通过给元素设置checks属性来进行设置，格式为:checks="1,2,3,4,5"<br>
- user  words  "cehcks"  to set selected values;
- like:checks="1,2,3,4,5"
-  - 设置文本的表单项<br>seting textLabel  
- 通过textLabel属性设置文本在的表单项中的name属性；提交时将以该名称把文本提交到后台
- <br>
+ 通过给元素设置属性checks来进行设置，格式为:checks="1,2,3,4,5" 
+ 
+ 例如：
+ 
+
+```
+ <textarea   style="width: 300px;overflow:hidden;"  **checks** ="1,11,2,23"   type="text" readonly>
+ </textarea>
+```
+ 
 MultipleTreeSelect 开发者网站(my website):http://www.qqxh.net
 
