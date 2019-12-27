@@ -108,15 +108,35 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **4.api列表**
 - 获取选中文本<br>get selected text value
 ```js
-  $("#yourContentId").drawMultipleTree("getChecks","text");
+  
+ 
+var obj=$("#yourContentId").drawMultipleTree(options);
+
+    obj.text();
+ 
+
 ```
-- 获取选中code<br>get selected code value
+- 获取选中值
+ 
 ```js
-  $("#yourContentId").drawMultipleTree(getChecks,"val");
+ var obj=$("#yourContentId").drawMultipleTree(options);
+
+    obj.val();
 ```
- - 设置默认选中值<br>seting default selected
- <br><br>
- 通过给元素设置属性checks来进行设置，格式为:checks="1,2,3,4,5" 
+
+- js给组件赋值
+ 
+```js
+ var obj=$("#yourContentId").drawMultipleTree(options);
+
+    obj.val([1,2,3,4,5,6,7]);
+```
+
+ - 默认选中值
+ 
+方式1：
+
+ 通过给dom元素设置属性checks来进行设置，格式为:checks="1,2,3,4,5" 
  
  例如：
  
@@ -126,5 +146,15 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
  </textarea>
 ```
  
+方式2：
+
+ 通过optios配置实现配置项为：checks
+ 
+ 例如：
+ 
+
+```
+ $("#yourContentId").drawMultipleTree({checks:[1,2,3],.....});
+```
 MultipleTreeSelect 开发者网站(my website):http://www.qqxh.net
 
