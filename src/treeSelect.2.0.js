@@ -136,20 +136,23 @@
             var _this = this;
             var ifUp = function () {
                 if (_this.options.direction == 'auto') {
-                    var windowH = $(window).height();
+                    var windowH = document.body.clientHeight;
                     var elH = _this.$el.height();
-                    var el2top = _this.container.offset().top
-                    var scrollTop = $(document).scrollTop()
+                    var el2top = _this.$el.offset().top;
+                    var scrollTop = $(document).scrollTop();
                     var drowdownHeight = dropdown_container.height();
-                    /*下拉框底部距离窗口底部的巨鹿*/
-                    var hbottom = windowH - ((el2top - scrollTop) + drowdownHeight + elH);
-                    var htop = el2top - scrollTop - drowdownHeight;
+                    /*下拉框底部距离窗口底部的距离*/
+                    var topHeight = el2top - scrollTop;
+                    var hbottom = windowH - topHeight - (drowdownHeight + elH);
+                    /*容器到顶部的距离减去下拉框高度*/
+                    var htop = topHeight - drowdownHeight;
+                    debugger
                     if (hbottom < htop) {
                         return true;
                     } else {
                         return false;
                     }
-                } else if (_this.options.direction == 'up') {
+                } else if (_this.options.direction != 'up') {
                     return false;
                 } else {
                     return true;
