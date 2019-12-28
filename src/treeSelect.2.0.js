@@ -109,7 +109,10 @@
                     var el2top = _this.container.offset().top
                     var scrollTop = $(document).scrollTop()
                     var drowdownHeight = dropdown_container.height();
-                    if (windowH - ((el2top - scrollTop) + drowdownHeight + elH) < 10) {
+                    /*下拉框底部距离窗口底部的巨鹿*/
+                    var hbottom = windowH - ((el2top - scrollTop) + drowdownHeight + elH);
+                    var htop = el2top - scrollTop - drowdownHeight;
+                    if (hbottom < htop) {
                         return true;
                     } else {
                         return false;
@@ -126,9 +129,9 @@
                 if (ifUp()) {
                     dropdown_container.addClass("up")
                     dropdown_container.css("bottom", _this.$el.outerHeight());
-                    dropdown_container.css("top",'');
+                    dropdown_container.css("top", '');
                 } else {
-                    dropdown_container.css("bottom",'');
+                    dropdown_container.css("bottom", '');
                     dropdown_container.css("top", _this.$el.outerHeight());
                 }
                 event.stopPropagation();
