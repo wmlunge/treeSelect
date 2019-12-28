@@ -3,8 +3,10 @@
 <html>
 <head>
     <title>treeSelect demo</title>
-    <link type="text/css" rel="stylesheet" href="css/demo.css">
+
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
+
+    <link type="text/css" rel="stylesheet" href="css/treeSelectStyle.css">
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
     <script type="text/javascript" src="treeSelect.2.0.min.js"></script>
@@ -55,19 +57,28 @@
 </head>
 
 <body style="padding: 100px">
-<br>
-<textarea id="demo" style="width: 300px;overflow:hidden;cursor: pointer" checks="1,11,2,23" type="text" readonly>
-</textarea>
-<br>
-<button type="button" id="btn1">获取选中值</button>
-<br>
-ids:<textarea type="text" id="input1"></textarea>
-<br>
-texts:<textarea type="text" id="input12"></textarea>
-<br>
-<button type="button" id="btn2">赋值</button>
-<br>
-ids:<textarea type="text" id="input2">[1,2]</textarea>
-
+<table>
+    <tr>
+        <td>
+            demo
+        </td>
+        <td colspan="2">
+            <textarea id="demo" style="width: 300px;overflow:hidden;cursor: pointer" checks="1,11,2,23" type="text"
+                      readonly></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button type="button" id="btn1">获取选中值</button>
+        </td>
+        <td><textarea type="text" id="input1"></textarea><textarea type="text" id="input12"></textarea></td>
+    </tr>
+    <tr>
+        <td>
+            <button type="button" id="btn2">赋值</button>
+        </td>
+        <td colspan="2"><textarea type="text" id="input2">[1,2]</textarea></td>
+    </tr>
+</table>
 </body>
 </html>
