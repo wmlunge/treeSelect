@@ -102,7 +102,7 @@ api更加丰富。结构更加清晰
              callback:{
                  onCheck: function() {}/*选中事件的回调*/
              },
-             direction: "auto"/*下拉框弹出方向默认自动探查*/
+             direction: "auto"/* up向上,down向下,auto自动适应  默认auto*/
          }
 ```
 
