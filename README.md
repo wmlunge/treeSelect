@@ -102,7 +102,8 @@ api更加丰富。结构更加清晰
              callback:{
                  onCheck: function() {}/*选中事件的回调*/
              },
-             direction: "auto"/* up向上,down向下,auto自动适应  默认auto*/
+             direction: "auto",/* up向上,down向下,auto自动适应  默认auto*/
+              filter:true/* 是否开启过滤 默认true*/
          }
 ```
 
@@ -157,5 +158,11 @@ var obj=$("#yourContentId").treeSelect(options);
 ```
  $("#yourContentId").treeSelect({checks:[1,2,3],.....});
 ```
+
+注意事项:
+
+检索功能只支持前端检索，也就是说想使用异步模式的话，需要一次把树节点加载完全然后检索才有意义。配合异步后台检索暂时不考虑实现。
+
+
 TreeSelect 开发者网站(my website):http://www.qqxh.net
 
