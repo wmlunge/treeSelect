@@ -1,7 +1,7 @@
 ### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
 
 TreeSelect,ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
-现在升级2.0名字由原来的DrawMultipleTree改为TreeSelect.js
+现在升级2.0名字由原来的 _**DrawMultipleTree改为TreeSelect.js**_ 
 api更加丰富。结构更加清晰
 #### TreeSelect有如下主要特点<br>(has the following main features)
 - 兼容ie8以及各大主流浏览器
@@ -171,7 +171,9 @@ var obj=$("#yourContentId").treeSelect(options);
  var obj=$("#yourContentId").treeSelect(options);
     obj.destory();
 ```
-注意事项:
+
+### 注意事项:
+
 
 检索功能只支持前端检索，也就是说想使用异步模式的话，需要一次把树节点加载完全然后检索才有意义。配合异步后台检索暂时不考虑实现。
 
