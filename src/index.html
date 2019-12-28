@@ -41,9 +41,7 @@
         var selectObj;
         $(function () {
             selectObj = $("#demo").treeSelect(defaults);
-            debugger
             $("#btn1").click(function () {
-                debugger;
                 console.log(selectObj.val());
                 $("#input1").val(JSON.stringify(selectObj.val()));
                 $("#input12").val(JSON.stringify(selectObj.text()));
