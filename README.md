@@ -1,16 +1,15 @@
 ### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
 
-MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
-(MultipleTreeSelect is an tree drop-down selection box plugin based on jquery and ztree ; support ie8 +, Google, Firefox, 360 and other browsers)
+TreeSelect,ztree和sliscroll开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
 
-#### MultipleTreeSelect有如下主要特点<br>(has the following main features)
+#### TreeSelect有如下主要特点<br>(has the following main features)
 - 兼容ie8以及各大主流浏览器<br>(Compatible ie8 and the major mainstream browser)
 - 低侵入式使用<br>(Low intrusion)
 - 使用简单方便<br>(Easy to use)
 - 继承了ztree高效渲染<br>(Efficient)
 
 
-**MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
+**TreeSelect 欢迎使用本插件: TreeSelect**
 <br>(Welcome to this plugin)
 #### 多选示例图片：<br>(Checkbox Example:)
 ![demo](https://images.gitee.com/uploads/images/2019/1228/000428_5fea50f1_2042758.png)
@@ -18,7 +17,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 ![demo](https://images.gitee.com/uploads/images/2019/1228/000429_c3cbd7f9_2042758.png)
 #### 快速上手示例<br>(Quick start example)：
 
-**1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
+**1. 引入jquery,ztree,TreeSelect等js和css文件**
 
 ```html
 <meta charset="UTF-8">
@@ -30,7 +29,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
-    <script type="text/javascript" src="multipleTreeSelect.2.0.js"></script>
+    <script type="text/javascript" src="treeSelect.2.0.js"></script>
 
     <script>
 
@@ -58,7 +57,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
         ]; 
         /*注册下拉树方法也很简单*/
         $(document).ready(function () {
-            $("textarea").drawMultipleTree({
+            $("textarea").treeSelect({
             
             zNodes: zNodes
         });
@@ -101,7 +100,8 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
              height:433,/*容器高度默认200px*/
              callback:{
                  onCheck: function() {}/*选中事件的回调*/
-             }
+             },
+             direction: "auto"/*下拉框弹出方向默认自动探查*/
          }
 ```
 
@@ -110,7 +110,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 ```js
   
  
-var obj=$("#yourContentId").drawMultipleTree(options);
+var obj=$("#yourContentId").treeSelect(options);
 
     obj.text();
  
@@ -119,7 +119,7 @@ var obj=$("#yourContentId").drawMultipleTree(options);
 - 获取选中值
  
 ```js
- var obj=$("#yourContentId").drawMultipleTree(options);
+ var obj=$("#yourContentId").treeSelect(options);
 
     obj.val();
 ```
@@ -127,7 +127,7 @@ var obj=$("#yourContentId").drawMultipleTree(options);
 - js给组件赋值
  
 ```js
- var obj=$("#yourContentId").drawMultipleTree(options);
+ var obj=$("#yourContentId").treeSelect(options);
 
     obj.val([1,2,3,4,5,6,7]);
 ```
@@ -154,7 +154,7 @@ var obj=$("#yourContentId").drawMultipleTree(options);
  
 
 ```
- $("#yourContentId").drawMultipleTree({checks:[1,2,3],.....});
+ $("#yourContentId").treeSelect({checks:[1,2,3],.....});
 ```
-MultipleTreeSelect 开发者网站(my website):http://www.qqxh.net
+TreeSelect 开发者网站(my website):http://www.qqxh.net
 
