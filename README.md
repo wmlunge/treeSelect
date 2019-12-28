@@ -1,9 +1,26 @@
-### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
+**先讲一下老版本两年带来的意想不到的苦果。**
+本身该组件名字叫做MultipleTreeSelect，工作几年的开发不管后台前台基本都会有需要做**树形控件**的场景。要知道在老岁月里，大部分公司还用的是jQuery,那时候不像现在各种ui框架盛行，一个合适的开箱即用的下拉树形插件并不多见。有的基本上都是各种博客教你如何去实现一个。往往搞一个这东西，总要搞一大堆冗余代码。而且每次要用的时候都是如此；所以当时自己就动手封装了一个满足**特定需求**的MultipleTreeSelect；完事后基本上在传统js环境下还是能适应一些场景的，在那时候给本人省了很多时间；
+
+后来开源平台火起来了，整理知识的时候把这个组件存到了gitee上面，不知道过了多久，也是无心插柳竟然被某些小伙伴传到了一些资源网站上，然后就开始有较多的人用这个插件了；插件的各种弊端也就暴露出来了，最近无意间翻看的时候，发现好多人问一些问题；心想这下**坏事了**，给一些小伙伴带来不少困扰，浪费了他们不少时间研究，插件缺少一些高频需要的常见功能；
+
+其实这个组件老版本在早些年的传统行业，交互都是刷新整个页面来渲染的时候，能支撑的住一些场景；但是在现代前端流行ajax异步渲染，单页应用等技术的背景下，很多功能都行不通；
+
+
+意识到问题之后，我从一些资源网站的评价和小伙伴的私信和邮件中抽取一些迫切需要的功能对组件进行重构升级；也吸取了一些意见；提供了几个开箱即用的api；同时直接把组件名字也修改成了treeSelect;这也是为什么直接是2.0的原因。
+
+下面直接把readme分享给大家；希望对您有用，能帮助你。
+
+如果有疑问或者建议可以给我留言；
+
+# 提前给按键拜个早年
+ 
+
+### jquery 树形下拉框插件
 
 TreeSelect,ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
 现在升级2.0名字由原来的 _**MultipleTreeSelect改为TreeSelect.js**_ 
 api更加丰富。结构更加清晰
-#### TreeSelect有如下主要特点<br>(has the following main features)
+#### TreeSelect有如下主要特点
 - 兼容ie8以及各大主流浏览器
 - 低侵入式使用
 - 使用简单方便
@@ -11,12 +28,12 @@ api更加丰富。结构更加清晰
 
 
 **TreeSelect 欢迎使用本插件: TreeSelect**
-<br>(Welcome to this plugin)
-#### 多选示例图片：<br>(Checkbox Example:)
-![demo](https://images.gitee.com/uploads/images/2019/1228/000428_5fea50f1_2042758.png)
-#### 单选选示例图片：<br>(Radio Example:)
-![demo](https://images.gitee.com/uploads/images/2019/1228/000429_c3cbd7f9_2042758.png)
-#### 快速上手示例<br>(Quick start example)：
+
+#### 多选示例图片：
+![demo](https://user-gold-cdn.xitu.io/2019/12/28/16f4cfb0a596db62?w=323&h=317&f=png&s=13324)
+#### 单选选示例图片
+![demo](https://user-gold-cdn.xitu.io/2019/12/28/16f4cfb0a7f11f77?w=322&h=415&f=png&s=17136)
+#### 快速上手示例
 
 **1. 引入jquery,ztree,TreeSelect等js和css文件**
 
@@ -77,7 +94,7 @@ api更加丰富。结构更加清晰
 ```
 
 **2.异步加载配置实例**
-<br>**async example**
+
 ```js
  var options = {
              async: {
@@ -87,8 +104,7 @@ api更加丰富。结构更加清晰
          }
 ```
 
-**3.配置文件详解**<br>
-**setting file detailed explanation**
+**3.配置文件详解**
 ```js
  var options = {
              
@@ -108,7 +124,7 @@ api更加丰富。结构更加清晰
 ```
 
 **4.api列表**
-- 获取选中文本<br>get selected text value
+- 获取选中文本
 ```js
   
  
@@ -162,7 +178,7 @@ var obj=$("#yourContentId").treeSelect(options);（如果这里jquery选择器�
  
 方式1：
 
- 通过destory方法进行小伙
+ 通过destory方法进行销毁
  
  例如：
  
@@ -178,5 +194,5 @@ var obj=$("#yourContentId").treeSelect(options);（如果这里jquery选择器�
 检索功能只支持前端检索，也就是说想使用异步模式的话，需要一次把树节点加载完全然后检索才有意义。配合异步后台检索暂时不考虑实现。
 
 
-TreeSelect 开发者网站(my website):http://www.qqxh.net
+TreeSelect 开发者网站:http://www.qqxh.net
 
