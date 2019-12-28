@@ -37,19 +37,37 @@
             height: 233
         };
         var selectObj;
-        $(document).ready(function () {
-            selectObj = $("textarea").treeSelect(defaults);
-            console.log(selectObj.val());
-            console.log(selectObj.text());
-        });
-        //-->
+        $(function () {
+            selectObj = $("#demo").treeSelect(defaults);
+            debugger
+            $("#btn1").click(function () {
+                debugger;
+                console.log(selectObj.val());
+                $("#input1").val(JSON.stringify(selectObj.val()));
+                $("#input12").val(JSON.stringify(selectObj.text()));
+            })
+            $("#btn2").click(function () {
+                selectObj.val(JSON.parse($("#input2").val()))
+            })
+        })
+
     </script>
 </head>
 
 <body style="padding: 100px">
 <br>
-<textarea style="width: 300px;overflow:hidden;cursor: pointer" checks="1,11,2,23" type="text" readonly>
+<textarea id="demo" style="width: 300px;overflow:hidden;cursor: pointer" checks="1,11,2,23" type="text" readonly>
 </textarea>
+<br>
+<button type="button" id="btn1">获取选中值</button>
+<br>
+ids:<textarea type="text" id="input1"></textarea>
+<br>
+texts:<textarea type="text" id="input12"></textarea>
+<br>
+<button type="button" id="btn2">赋值</button>
+<br>
+ids:<textarea type="text" id="input2">[1,2]</textarea>
 
 </body>
 </html>
