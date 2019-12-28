@@ -112,7 +112,7 @@ api更加丰富。结构更加清晰
 ```js
   
  
-var obj=$("#yourContentId").treeSelect(options);
+var obj=$("#yourContentId").treeSelect(options);（如果这里jquery选择器获取到多个元素，那么这里返回的是TreeSelect对象列表）
 
     obj.text();
  
