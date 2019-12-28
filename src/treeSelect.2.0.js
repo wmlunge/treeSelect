@@ -76,16 +76,24 @@
         },
         bindEvent: function () {
             this.bindDrawerEvent();
+            this.bindSearch();
+        },
+        bindSearch: function () {
             this.searchTime = null;
             var _this = this;
-            this.searchInput.keyup(function () {
+            this.searchInput.keyup(function (event) {
+                if (event.keyCode !== 13) {
+                    return false;
+                }
                 var keyWord = $(this).val();
                 /*上一句已经执行了直接清理掉*/
                 if (this.searchTime) {
                     clearTimeout(this.searchTime);
                 }
                 this.searchTime = setTimeout(function () {
-                    console.log(keyWord);
+                    if (keyWord === "") {
+                        return;
+                    }
                     var allNodes = _this.$zTreeObj.transformToArray(_this.$zTreeObj.getNodes());
                     _this.$zTreeObj.hideNodes(allNodes);    //当开始搜索时，先将所有节点隐藏
                     var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, 0);    //通过关键字模糊搜索
@@ -157,8 +165,8 @@
         buildingDOM: function () {
             this.$el.css({display: 'block'});
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
-            this.searchInput = $('<input class="searchInput" type="text" style="width: ' + this.getelementwidth(this.$el) + '">');
-            this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + this.getelementwidth(this.$el) + ';"></ul>');
+            this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 10) + 'px;">');
+            this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
             this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
             this.dropdown_container.append(this.searchInput);
             this.dropdown_container.append(this.tree_el);

@@ -23,11 +23,11 @@ ul.ztree {
     z-index: 110004;
     border: solid 1px;
     border-radius: 5px;
-    padding-bottom: 10px
+    padding-bottom: 10px;
+    text-align: center;
 }
 
 .searchInput {
     margin-top: 4px;
-    border-radius: 3px;
 }
 
