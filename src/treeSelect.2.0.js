@@ -12,9 +12,10 @@
         checks: [],
         chkStyle: "checkbox",
         radioType: "all",
-        height: 'auto'
+        height: 'auto',
+        direction: "auto"
     }
-    var MultipleSelect = function (target_element, options) {
+    var TreeSelect = function (target_element, options) {
         this.$el = $(target_element);
         var _this = this;
 
@@ -25,8 +26,8 @@
         this.options = this.cloneObj(new $options());
         this.init();
     }
-    MultipleSelect.prototype = {
-        constructor: MultipleSelect,
+    TreeSelect.prototype = {
+        constructor: TreeSelect,
         init: function () {
             var elChecks = this.$el.attr("checks");
             if (!this.options.checks) {
@@ -74,33 +75,10 @@
             return texts;
         },
         bindEvent: function () {
-            var dropdown_container = this.dropdown_container;
-            this.$el.click(function (event) {
-                event.stopPropagation();
-                if (!dropdown_container.is(':visible')) {
-                    dropdown_container.slideDown("fast");
-                } else {
-                    dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
-                }
-            });
-            this.container.mouseleave(function () {
-
-                if (dropdown_container.is(':visible')) {
-
-                    dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
-                }
-            });
-            /*解决鼠标快速移动不兼容问题*/
-            this.dropdown_container.find("a").mouseleave(function (event) {
-                event.stopPropagation();
-            });
-            this.dropdown_container.find("span").mouseleave(function (event) {
-                event.stopPropagation();
-            });
+            this.bindDrawerEvent();
             this.searchTime = null;
             var _this = this;
             this.searchInput.keyup(function () {
-
                 var keyWord = $(this).val();
                 /*上一句已经执行了直接清理掉*/
                 if (this.searchTime) {
@@ -118,7 +96,59 @@
                     _this.$zTreeObj.showNodes($.unique(arr));    //显示所有要求的节点及其路径节点
                     _this.$zTreeObj.expandAll(true);
                 }, 500);
+            });
+        },
+        bindDrawerEvent: function () {
+            var dropdown_container = this.dropdown_container;
+            /*计算抽屉方向*/
+            var _this = this;
+            var ifUp = function () {
+                if (_this.options.direction == 'auto') {
+                    var windowH = $(window).height();
+                    var elH = _this.$el.height();
+                    var el2top = _this.container.offset().top
+                    var scrollTop = $(document).scrollTop()
+                    var drowdownHeight = dropdown_container.height();
+                    if (windowH - ((el2top - scrollTop) + drowdownHeight + elH) < 10) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else if (_this.options.direction == 'up') {
+                    return false;
+                } else {
+                    return true;
+                }
 
+            };
+
+            this.$el.click(function (event) {
+                if (ifUp()) {
+                    dropdown_container.addClass("up")
+                    dropdown_container.css("bottom", _this.$el.outerHeight());
+                    dropdown_container.css("top",'');
+                } else {
+                    dropdown_container.css("bottom",'');
+                    dropdown_container.css("top", _this.$el.outerHeight());
+                }
+                event.stopPropagation();
+                if (!dropdown_container.is(':visible')) {
+                    dropdown_container.slideDown("fast");
+                } else {
+                    dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
+                }
+            });
+            this.container.mouseleave(function () {
+                if (dropdown_container.is(':visible')) {
+                    dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
+                }
+            });
+            /*解决鼠标快速移动不兼容问题*/
+            this.dropdown_container.find("a").mouseleave(function (event) {
+                event.stopPropagation();
+            });
+            this.dropdown_container.find("span").mouseleave(function (event) {
+                event.stopPropagation();
             });
         },
         buildingDOM: function () {
@@ -126,7 +156,7 @@
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
             this.searchInput = $('<input class="searchInput" type="text" style="width: ' + this.getelementwidth(this.$el) + '">');
             this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + this.getelementwidth(this.$el) + ';"></ul>');
-            this.dropdown_container = $('<div   class="menuContent"  ></div>');
+            this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
             this.dropdown_container.append(this.searchInput);
             this.dropdown_container.append(this.tree_el);
             this.container.append(this.dropdown_container);
@@ -243,16 +273,16 @@
             return newObj;
         }
     }
-    $.fn.multipleSelect = function (options) {
+    $.fn.treeSelect = function (options) {
         var resultArr = [];
         this.each(function () {
             var $this = $(this);
-            var multipleTreeObj = $this.data('multipleSelect');
-            if (!multipleTreeObj) {
-                multipleTreeObj = new MultipleSelect(this, options);
-                $.data(this, 'multipleSelect', multipleTreeObj);
+            var treeSelectObj = $this.data('treeSelect');
+            if (!treeSelectObj) {
+                treeSelectObj = new TreeSelect(this, options);
+                $.data(this, 'treeSelect', treeSelectObj);
             }
-            resultArr.push(multipleTreeObj);
+            resultArr.push(treeSelectObj);
         });
         return resultArr.length == 1 ? resultArr[0] : resultArr;
     };

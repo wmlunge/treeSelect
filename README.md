@@ -1,24 +1,22 @@
 ### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
 
-MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
-(MultipleTreeSelect is an tree drop-down selection box plugin based on jquery and ztree ; support ie8 +, Google, Firefox, 360 and other browsers)
-
+MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
+ 
 #### MultipleTreeSelect有如下主要特点<br>(has the following main features)
-- 兼容ie8以及各大主流浏览器<br>(Compatible ie8 and the major mainstream browser)
-- 低侵入式使用<br>(Low intrusion)
-- 使用简单方便<br>(Easy to use)
-- 继承了ztree高效渲染<br>(Efficient)
+- 兼容ie8以及各大主流浏览器 
+- 低侵入式使用 
+- 使用简单方便 
+- 继承了ztree高效渲染 
 
 
-**MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
-<br>(Welcome to this plugin)
+**treeSelect 欢迎使用本插件: treeSelect**
 #### 多选示例图片：<br>(Checkbox Example:)
 ![demo](https://images.gitee.com/uploads/images/2019/1228/000428_5fea50f1_2042758.png)
 #### 单选选示例图片：<br>(Radio Example:)
 ![demo](https://images.gitee.com/uploads/images/2019/1228/000429_c3cbd7f9_2042758.png)
 #### 快速上手示例<br>(Quick start example)：
 
-**1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
+**1. 引入jquery,ztree,treeSelect等js和css文件**
 
 ```html
 <meta charset="UTF-8">
@@ -30,7 +28,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
-    <script type="text/javascript" src="multipleTreeSelect.2.0.js"></script>
+    <script type="text/javascript" src="treeSelect.2.0.js"></script>
 
     <script>
 
@@ -58,7 +56,7 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
         ]; 
         /*注册下拉树方法也很简单*/
         $(document).ready(function () {
-            $("textarea").drawMultipleTree({
+            $("textarea").treeSelect({
             
             zNodes: zNodes
         });
@@ -108,11 +106,11 @@ MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择�
 **4.api列表**
 - 获取选中文本<br>get selected text value
 ```js
-  $("#yourContentId").drawMultipleTree("getChecks","text");
+  $("#yourContentId").treeSelect("getChecks","text");
 ```
 - 获取选中code<br>get selected code value
 ```js
-  $("#yourContentId").drawMultipleTree(getChecks,"val");
+  $("#yourContentId").treeSelect(getChecks,"val");
 ```
  - 设置默认选中值<br>seting default selected
  <br><br>
