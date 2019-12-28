@@ -37,8 +37,8 @@
                 this.options.checks = $.merge(this.options.checks, elChecks.split(','));
             }
             this.buildingDOM();
-            this.initTree()
-            this.bindEvent()
+            this.initTree();
+            this.bindEvent();
         },
         val: function (ids) {
             var nodes = this.$zTreeObj.getCheckedNodes(true);
@@ -85,26 +85,50 @@
                 if (event.keyCode !== 13) {
                     return false;
                 }
-                var keyWord = $(this).val();
+                _this.$doload = false;
+                var keyWord = $(this).val().trim();
                 /*上一句已经执行了直接清理掉*/
                 if (this.searchTime) {
                     clearTimeout(this.searchTime);
                 }
                 this.searchTime = setTimeout(function () {
                     if (keyWord === "") {
+                        _this.search_tree_el.hide();
+                        _this.tree_el.show();
+                        _this.$searchZTreeObj.destroy();
                         return;
                     }
-                    var allNodes = _this.$zTreeObj.transformToArray(_this.$zTreeObj.getNodes());
-                    _this.$zTreeObj.hideNodes(allNodes);    //当开始搜索时，先将所有节点隐藏
+                    ;
+                    _this.search_tree_el.show();
+                    _this.tree_el.hide();
                     var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, 0);    //通过关键字模糊搜索
-                    var arr = new Array();
-                    for (var i = 0; i < nodeList.length; i++) {
-                        arr = $.merge(arr, nodeList[i].getPath());    //找出所有符合要求的叶子节点的路径
-                    }
-                    _this.$zTreeObj.showNodes($.unique(arr));    //显示所有要求的节点及其路径节点
-                    _this.$zTreeObj.expandAll(true);
+                    _this.$doload = true;
+                    _this.lazyShowSearchNode(0, nodeList)
+
                 }, 500);
             });
+        },
+        lazyShowSearchNode: function (index, nodeList) {
+            var _this = this;
+            var nodelength = nodeList.length;
+            if (!this.$doload) {
+                return;
+            }
+            if (index < nodelength) {
+                var _list = nodeList.slice(index, index += 100);
+                if (index === 100) {
+                    this.initSearchTree(_list);
+                    this.lazyShowSearchNode(index, nodeList);
+                } else {
+                    setTimeout(function () {
+                        _this.$searchZTreeObj.addNodes(null, -1, _list);
+                        _this.lazyShowSearchNode(index, nodeList);
+                    }, 1000);
+                }
+            }
+        },
+        randomID: function (randomLength) {
+            return Number(Math.random().toString().substr(3, randomLength) + new Date().getTime()).toString(36)
         },
         bindDrawerEvent: function () {
             var dropdown_container = this.dropdown_container;
@@ -167,14 +191,16 @@
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
             this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 10) + 'px;">');
             this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
+            this.search_tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
+
             this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
             this.dropdown_container.append(this.searchInput);
             this.dropdown_container.append(this.tree_el);
+            this.dropdown_container.append(this.search_tree_el.hide());
             this.container.append(this.dropdown_container);
+            this.tree_el.attr("id", this.randomID(3))
+            this.search_tree_el.attr("id", this.randomID(3))
             return this.container;
-        },
-        getelementwidth: function (element) {
-            return (element.outerWidth() - 2) + "px";
         },
         initDeafaultCheckedStatus: function (nodes) {
             var _this = this;
@@ -237,19 +263,53 @@
                 }
                 return responseData;
             };
-            _this.initDeafaultCheckedStatus(this.options.zNodes)
+            _this.initDeafaultCheckedStatus(this.options.zNodes);
             this.$zTreeObj = $.fn.zTree.init(this.tree_el, setting, this.options.zNodes);
             this.onCheck();
             return this;
+        },
+        initSearchTree: function (data) {
+            var _this = this;
+            var setting = {
+                check: {
+                    enable: true,
+                    chkboxType: {"Y": "", "N": ""},
+                    chkStyle: this.options.chkStyle,
+                    radioType: this.options.radioType
+                },
+                view: {
+                    dblClickExpand: false,
+                    fontCss: function (treeId, treeNode) {
+                        return {color: "#A60000", "font-weight": "bold"};
+                    }
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                callback: {
+                    onCheck: function (e, treeId, treeNode) {
+                        var node = _this.$zTreeObj.getNodeByParam("id", treeNode.id);
+                        _this.$zTreeObj.checkNode(node, treeNode.checked, true);
+                        _this.onCheck();
+                    },
+                    onClick: function (e, treeId, treeNode, clickFlag) {
+                        _this.$searchZTreeObj.checkNode(treeNode, !treeNode.checked, true);
+                        _this.onCheck();
+                    }
+                }
+            };
+            this.$searchZTreeObj = $.fn.zTree.init(this.search_tree_el, setting, data);
         },
         onCheck: function (e, treeId, treeNode) {
             this.m2v();
             this.options.callback.onCheck(this);
         },
         m2v: function () {
-            var nodes = this.$zTreeObj.getCheckedNodes(true),
-                text = "",
-                codes = "";
+            var nodes = this.$zTreeObj.getCheckedNodes(true);
+            var text = "";
+            var codes = "";
             for (var i = 0, l = nodes.length; i < l; i++) {
                 text += nodes[i].name + ",";
                 codes += nodes[i].id + ",";
