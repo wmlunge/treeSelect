@@ -50,6 +50,9 @@
             $("#btn2").click(function () {
                 selectObj.val(JSON.parse($("#input2").val()))
             })
+            $("#btn3").click(function () {
+                selectObj.destory();
+            })
         })
 
     </script>
@@ -78,6 +81,12 @@
                 <button type="button" id="btn2">赋值</button>
             </td>
             <td colspan="2"><textarea type="text" id="input2">[1,2]</textarea></td>
+        </tr>
+        <tr>
+            <td>
+                <button type="button" id="btn3">销毁</button>
+            </td>
+            <td colspan="2"></td>
         </tr>
     </table>
 </div>

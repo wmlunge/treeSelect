@@ -14,10 +14,10 @@
         radioType: "all",
         height: 'auto',
         direction: "auto",
-        filter:true
+        filter: true
     }
-    var TreeSelect = function (target_element, options) {
-        this.$el = $(target_element);
+    var TreeSelect = function (el, options) {
+        this.$el = $(el);
         var _this = this;
 
         var $options = function () {
@@ -77,7 +77,7 @@
         },
         bindEvent: function () {
             this.bindDrawerEvent();
-            if(this.options.filter){
+            if (this.options.filter) {
                 this.bindSearch();
             }
         },
@@ -199,7 +199,7 @@
             this.search_tree_el = $('<ul class="ztree" style="height:' + this.options.height + 'px; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
 
             this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
-            if(this.options.filter){
+            if (this.options.filter) {
                 this.dropdown_container.append(this.searchInput);
             }
             this.dropdown_container.append(this.tree_el);
@@ -349,6 +349,18 @@
                 newObj[key] = typeof val === 'object' ? this.cloneObj(val) : val;
             }
             return newObj;
+        },
+        destory: function () {
+            if (this.container) {
+                $.data(this.$el[0], 'treeSelect', undefined);
+                this.container.replaceWith(this.$el);
+                this.container = null;
+                this.$zTreeObj.destroy();
+                if (this.$searchZTreeObj) {
+                    this.$searchZTreeObj.destroy();
+                }
+
+            }
         }
     }
     $.fn.treeSelect = function (options) {

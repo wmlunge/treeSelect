@@ -158,7 +158,19 @@ var obj=$("#yourContentId").treeSelect(options);
 ```
  $("#yourContentId").treeSelect({checks:[1,2,3],.....});
 ```
+ - 销毁组件
+ 
+方式1：
 
+ 通过destory方法进行小伙
+ 
+ 例如：
+ 
+
+```
+ var obj=$("#yourContentId").treeSelect(options);
+    obj.destory();
+```
 注意事项:
 
 检索功能只支持前端检索，也就是说想使用异步模式的话，需要一次把树节点加载完全然后检索才有意义。配合异步后台检索暂时不考虑实现。
