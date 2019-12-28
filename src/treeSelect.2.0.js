@@ -189,9 +189,9 @@
         buildingDOM: function () {
             this.$el.css({display: 'block'});
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
-            this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 10) + 'px;">');
-            this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
-            this.search_tree_el = $('<ul class="ztree" style="height:' + this.options.height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
+            this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 20) + 'px;">');
+            this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + 'px; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
+            this.search_tree_el = $('<ul class="ztree" style="height:' + this.options.height + 'px; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
 
             this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
             this.dropdown_container.append(this.searchInput);
