@@ -146,7 +146,6 @@
                     var hbottom = windowH - topHeight - (drowdownHeight + elH);
                     /*容器到顶部的距离减去下拉框高度*/
                     var htop = topHeight - drowdownHeight;
-                    debugger
                     if (hbottom < htop) {
                         return true;
                     } else {
