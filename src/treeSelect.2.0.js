@@ -13,7 +13,8 @@
         chkStyle: "checkbox",
         radioType: "all",
         height: 'auto',
-        direction: "auto"
+        direction: "auto",
+        filter:true
     }
     var TreeSelect = function (target_element, options) {
         this.$el = $(target_element);
@@ -76,7 +77,9 @@
         },
         bindEvent: function () {
             this.bindDrawerEvent();
-            this.bindSearch();
+            if(this.options.filter){
+                this.bindSearch();
+            }
         },
         bindSearch: function () {
             this.searchTime = null;
@@ -196,7 +199,9 @@
             this.search_tree_el = $('<ul class="ztree" style="height:' + this.options.height + 'px; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
 
             this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
-            this.dropdown_container.append(this.searchInput);
+            if(this.options.filter){
+                this.dropdown_container.append(this.searchInput);
+            }
             this.dropdown_container.append(this.tree_el);
             this.dropdown_container.append(this.search_tree_el.hide());
             this.container.append(this.dropdown_container);
