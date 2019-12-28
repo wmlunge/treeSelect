@@ -1,22 +1,24 @@
 ### jquery 树形下拉框插件<br>(jquery tree drop box plugin)
 
-MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
- 
+MultipleTreeSelect是基于jquery,ztree和sliscroll开发的树形下拉选择框插件，支持ie8+,谷歌，火狐，360等浏览器<br>
+(MultipleTreeSelect is an tree drop-down selection box plugin based on jquery and ztree ; support ie8 +, Google, Firefox, 360 and other browsers)
+
 #### MultipleTreeSelect有如下主要特点<br>(has the following main features)
-- 兼容ie8以及各大主流浏览器 
-- 低侵入式使用 
-- 使用简单方便 
-- 继承了ztree高效渲染 
+- 兼容ie8以及各大主流浏览器<br>(Compatible ie8 and the major mainstream browser)
+- 低侵入式使用<br>(Low intrusion)
+- 使用简单方便<br>(Easy to use)
+- 继承了ztree高效渲染<br>(Efficient)
 
 
-**treeSelect 欢迎使用本插件: treeSelect**
+**MultipleTreeSelect 欢迎使用本插件: MultipleTreeSelect**
+<br>(Welcome to this plugin)
 #### 多选示例图片：<br>(Checkbox Example:)
 ![demo](https://images.gitee.com/uploads/images/2019/1228/000428_5fea50f1_2042758.png)
 #### 单选选示例图片：<br>(Radio Example:)
 ![demo](https://images.gitee.com/uploads/images/2019/1228/000429_c3cbd7f9_2042758.png)
 #### 快速上手示例<br>(Quick start example)：
 
-**1. 引入jquery,ztree,treeSelect等js和css文件**
+**1. 引入jquery,ztree,MultipleTreeSelect等js和css文件**
 
 ```html
 <meta charset="UTF-8">
@@ -28,7 +30,7 @@ MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，�
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
     <script src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.ztree.all.js"></script>
-    <script type="text/javascript" src="treeSelect.2.0.js"></script>
+    <script type="text/javascript" src="multipleTreeSelect.2.0.js"></script>
 
     <script>
 
@@ -56,7 +58,7 @@ MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，�
         ]; 
         /*注册下拉树方法也很简单*/
         $(document).ready(function () {
-            $("textarea").treeSelect({
+            $("textarea").drawMultipleTree({
             
             zNodes: zNodes
         });
@@ -67,7 +69,7 @@ MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，�
 
 <body style= "width: 1080px ;margin: 0 auto" ><br>
 <!--在此元素上进行渲染下拉树-->
-<textarea   style="width: 300px" checks="1,11,2,23"  textLabel: "jasontext"  type="text" readonly></textarea>
+<textarea   style="width: 300px" checks="1,11,2,23"  type="text" readonly></textarea>
 
 </body>
 </html>
@@ -106,15 +108,35 @@ MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，�
 **4.api列表**
 - 获取选中文本<br>get selected text value
 ```js
-  $("#yourContentId").treeSelect("getChecks","text");
+  
+ 
+var obj=$("#yourContentId").drawMultipleTree(options);
+
+    obj.text();
+ 
+
 ```
-- 获取选中code<br>get selected code value
+- 获取选中值
+ 
 ```js
-  $("#yourContentId").treeSelect(getChecks,"val");
+ var obj=$("#yourContentId").drawMultipleTree(options);
+
+    obj.val();
 ```
- - 设置默认选中值<br>seting default selected
- <br><br>
- 通过给元素设置属性checks来进行设置，格式为:checks="1,2,3,4,5" 
+
+- js给组件赋值
+ 
+```js
+ var obj=$("#yourContentId").drawMultipleTree(options);
+
+    obj.val([1,2,3,4,5,6,7]);
+```
+
+ - 默认选中值
+ 
+方式1：
+
+ 通过给dom元素设置属性checks来进行设置，格式为:checks="1,2,3,4,5" 
  
  例如：
  
@@ -124,5 +146,15 @@ MultipleTreeSelect是基于jquery,ztree开发的树形下拉选择框插件，�
  </textarea>
 ```
  
+方式2：
+
+ 通过optios配置实现配置项为：checks
+ 
+ 例如：
+ 
+
+```
+ $("#yourContentId").drawMultipleTree({checks:[1,2,3],.....});
+```
 MultipleTreeSelect 开发者网站(my website):http://www.qqxh.net
 
