@@ -1,4 +1,4 @@
-(function ($) {
+;(function ($) {
     var defaults = {
         zNodes: [],
         async: {
@@ -14,7 +14,8 @@
         radioType: "all",
         height: 'auto',
         direction: "auto",
-        filter: true
+        filter: true,
+        slideModel: 'click'
     }
     var TreeSelect = function (el, options) {
         this.$el = $(el);
@@ -76,7 +77,11 @@
             return texts;
         },
         bindEvent: function () {
-            this.bindDrawerEvent();
+            if (this.options.slideModel == 'click') {
+                this.bindDrawerEventClick();
+            } else {
+                this.bindDrawerEventSlide();
+            }
             if (this.options.filter) {
                 this.bindSearch();
             }
@@ -101,7 +106,6 @@
                         _this.$searchZTreeObj.destroy();
                         return;
                     }
-                    ;
                     _this.search_tree_el.show();
                     _this.tree_el.hide();
                     var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, 0);    //通过关键字模糊搜索
@@ -133,37 +137,37 @@
         randomID: function (randomLength) {
             return Number(Math.random().toString().substr(3, randomLength) + new Date().getTime()).toString(36)
         },
-        bindDrawerEvent: function () {
+        ifSlideUp: function () {
+            var _this = this;
+            if (_this.options.direction == 'auto') {
+                var windowH = document.body.clientHeight;
+                var elH = _this.$el.height();
+                var el2top = _this.$el.offset().top;
+                var scrollTop = $(document).scrollTop();
+                var drowdownHeight = _this.dropdown_container.height();
+                /*下拉框底部距离窗口底部的距离*/
+                var topHeight = el2top - scrollTop;
+                var hbottom = windowH - topHeight - (drowdownHeight + elH);
+                /*容器到顶部的距离减去下拉框高度*/
+                var htop = topHeight - drowdownHeight;
+                if (hbottom < 10 && hbottom < htop) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (_this.options.direction != 'up') {
+                return false;
+            } else {
+                return true;
+            }
+
+        },
+        bindDrawerEventSlide: function () {
             var dropdown_container = this.dropdown_container;
             /*计算抽屉方向*/
             var _this = this;
-            var ifUp = function () {
-                if (_this.options.direction == 'auto') {
-                    var windowH = document.body.clientHeight;
-                    var elH = _this.$el.height();
-                    var el2top = _this.$el.offset().top;
-                    var scrollTop = $(document).scrollTop();
-                    var drowdownHeight = dropdown_container.height();
-                    /*下拉框底部距离窗口底部的距离*/
-                    var topHeight = el2top - scrollTop;
-                    var hbottom = windowH - topHeight - (drowdownHeight + elH);
-                    /*容器到顶部的距离减去下拉框高度*/
-                    var htop = topHeight - drowdownHeight;
-                    if (hbottom < htop) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else if (_this.options.direction != 'up') {
-                    return false;
-                } else {
-                    return true;
-                }
-
-            };
-
             this.$el.click(function (event) {
-                if (ifUp()) {
+                if (_this.ifSlideUp()) {
                     dropdown_container.addClass("up")
                     dropdown_container.css("bottom", _this.$el.outerHeight());
                     dropdown_container.css("top", '');
@@ -183,30 +187,56 @@
                     dropdown_container.animate({height: 'toggle', opacity: 'toggle'}, "fast");
                 }
             });
-            /*解决鼠标快速移动不兼容问题*/
-            this.dropdown_container.find("a").mouseleave(function (event) {
-                event.stopPropagation();
-            });
-            this.dropdown_container.find("span").mouseleave(function (event) {
-                event.stopPropagation();
+
+        },
+        bindDrawerEventClick: function () {
+            var dropdown_container = this.dropdown_container;
+            /*计算抽屉方向*/
+            var _this = this;
+            var onBodyMusedown = function (event) {
+                if (!$(event.target).parents("#"+_this.id).length > 0) {
+                    dropdown_container.fadeOut("fast");
+                    $("body").unbind("mousedown", onBodyMusedown);
+                }
+            }
+            this.$el.click(function () {
+                if (_this.ifSlideUp()) {
+                    dropdown_container.addClass("up")
+                    dropdown_container.css("bottom", _this.$el.outerHeight());
+                    dropdown_container.css("top", '');
+                } else {
+                    dropdown_container.css("bottom", '');
+                    dropdown_container.css("top", _this.$el.outerHeight());
+                }
+                if (!dropdown_container.is(':visible')) {
+                    dropdown_container.slideDown("fast");
+                    $("body").bind("mousedown", onBodyMusedown);
+                } else {
+                    dropdown_container.fadeOut("fast");
+                    $("body").unbind("mousedown", onBodyMusedown);
+                }
+
             });
         },
         buildingDOM: function () {
             this.$el.css({display: 'block'});
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
             this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 20) + 'px;">');
-            this.tree_el = $('<ul class="ztree" style="height:' + this.options.height + 'px; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
-            this.search_tree_el = $('<ul class="ztree" style="height:' + this.options.height + 'px; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
+            var height = this.options.height + (this.options.height == "auto" ? "" : "px");
+            this.tree_el = $('<ul class="ztree" style="height:' + height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
+            this.search_tree_el = $('<ul class="ztree" style="height:' + height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
 
-            this.dropdown_container = $('<div   class="dropdown_container"  ></div>');
+            this.dropdown_container = $('<div  class="dropdown_container"  ></div>');
             if (this.options.filter) {
                 this.dropdown_container.append(this.searchInput);
             }
             this.dropdown_container.append(this.tree_el);
             this.dropdown_container.append(this.search_tree_el.hide());
             this.container.append(this.dropdown_container);
-            this.tree_el.attr("id", this.randomID(3))
-            this.search_tree_el.attr("id", this.randomID(3))
+            this.id = this.randomID(3);
+            this.dropdown_container.attr("id", this.id);
+            this.tree_el.attr("id", this.randomID(3));
+            this.search_tree_el.attr("id", this.randomID(3));
             return this.container;
         },
         initDeafaultCheckedStatus: function (nodes) {
@@ -246,7 +276,8 @@
                     radioType: this.options.radioType
                 },
                 view: {
-                    dblClickExpand: false
+                    dblClickExpand: false,
+                    showIcon: false
                 },
                 data: {
                     simpleData: {
@@ -286,8 +317,9 @@
                 },
                 view: {
                     dblClickExpand: false,
+                    showIcon: false,
                     fontCss: function (treeId, treeNode) {
-                        return {color: "#A60000", "font-weight": "bold"};
+                        return {color: "#FFA200", "font-weight": "bold"};
                     }
                 },
                 data: {
@@ -303,6 +335,7 @@
                     },
                     onClick: function (e, treeId, treeNode, clickFlag) {
                         _this.$searchZTreeObj.checkNode(treeNode, !treeNode.checked, true);
+                        _this.$searchZTreeObj.setting.callback.onCheck(e, treeId, treeNode);
                         _this.onCheck();
                     }
                 }
@@ -316,19 +349,19 @@
         m2v: function () {
             var nodes = this.$zTreeObj.getCheckedNodes(true);
             var text = "";
-            var codes = "";
+            var checks = "";
             for (var i = 0, l = nodes.length; i < l; i++) {
                 text += nodes[i].name + ",";
-                codes += nodes[i].id + ",";
+                checks += nodes[i].id + ",";
             }
             if (text.length > 0) {
                 text = text.substring(0, text.length - 1);
             }
-            if (codes.length > 0) {
-                codes = codes.substring(0, codes.length - 1);
+            if (checks.length > 0) {
+                checks = checks.substring(0, checks.length - 1);
             }
+            this.$el.attr("checks", checks);
             this.$el.val(text);
-            this.$el.attr("codes", codes);
         },
         onAsyncSuccess: function (event, treeId, treeNode, msg) {
             this.m2v();
@@ -376,4 +409,4 @@
         });
         return resultArr.length == 1 ? resultArr[0] : resultArr;
     };
-})(jQuery)
+})(jQuery);
