@@ -20,7 +20,15 @@
     var TreeSelect = function (el, options) {
         this.$el = $(el);
         var _this = this;
-
+        if (!Function.prototype.bind) {
+            Function.prototype.bind = function(obj) {
+                var _self = this
+                    ,args = arguments;
+                return function() {
+                    _self.apply(obj, Array.prototype.slice.call(args, 1));
+                }
+            }
+        }
         var $options = function () {
             return $.extend({}, defaults, options, _this.$el.data());//合并业务数据
         }
