@@ -139,12 +139,12 @@
                         })
                     }
                     _this.$doload = true;
-                    /*_this.lazyShowSearchNode(0, datas, 1)*/
                     _this.initSearchTree(datas);
 
                 }, 500);
             });
         },
+        /*todo 添加搜索前置事件*/
         loadParents: function (node, datas) {
             var parent = node.getParentNode();
             if (parent) {
@@ -152,26 +152,6 @@
                 this.loadParents(parent, datas);
             } else {
                 return;
-            }
-        },
-        lazyShowSearchNode: function (index, nodeList, size) {
-            var _this = this;
-            var nodelength = nodeList.length;
-            if (!this.$doload) {
-                return;
-            }
-            if (index < nodelength) {
-                var _list = nodeList.slice(index, index += size);
-                if (index === size) {
-                    /*首次加载初始化树*/
-                    this.initSearchTree(_list);
-                    this.lazyShowSearchNode(index, nodeList, size);
-                } else {
-                    setTimeout(function () {
-                        _this.$searchZTreeObj.addNodes(null, -1, _list);
-                        _this.lazyShowSearchNode(index, nodeList, size);
-                    }, 1000);
-                }
             }
         },
         randomID: function (randomLength) {
