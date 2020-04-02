@@ -102,7 +102,8 @@ api更加丰富。结构更加清晰
                  onCheck: function() {}/*选中事件的回调*/
              },
              direction: "auto",/* up向上,down向下,auto自动适应  默认auto*/
-              filter:true/* 是否开启过滤 默认true*/
+             filter:true,/* 是否开启过滤 默认true*/
+             searchShowParent: true/* 搜索是否展示父级默认false*/
          }
 ```
 

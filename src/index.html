@@ -1,6 +1,7 @@
-﻿<meta charset="UTF-8">
+﻿<!DOCTYPE>
+<meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<html>
+<html lang="en">
 <head>
     <title>treeSelect demo</title>
     <link type="text/css" rel="stylesheet" href="css/metroStyle/metroStyle.css">
@@ -32,7 +33,8 @@
 
             zNodes: zNodes,
             height: 233,
-            filter: true
+            filter: true,
+            searchShowParent: true
         };
         var selectObj;
         $(function () {
@@ -56,11 +58,12 @@
 <body style="padding: 100px;height: 1000px">
 <div style="height: 400px">
     <table>
+        <caption>treeSelect2.0 示例</caption>
         <tr>
-            <td>
+            <td scope="col">
                 demo
             </td>
-            <td colspan="2">
+            <td colspan="2" scope="colgroup">
             <textarea id="demo" style="width: 300px;overflow:hidden;cursor: pointer" checks="1,11,2,23" type="text"
                       readonly></textarea>
             </td>

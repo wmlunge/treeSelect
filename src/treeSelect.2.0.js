@@ -15,16 +15,17 @@
         height: 'auto',
         direction: "auto",
         filter: true,
-        slideModel: 'click'
+        slideModel: 'click',
+        searchShowParent: false
     }
     var TreeSelect = function (el, options) {
         this.$el = $(el);
         var _this = this;
         if (!Function.prototype.bind) {
-            Function.prototype.bind = function(obj) {
+            Function.prototype.bind = function (obj) {
                 var _self = this
-                    ,args = arguments;
-                return function() {
+                    , args = arguments;
+                return function () {
                     _self.apply(obj, Array.prototype.slice.call(args, 1));
                 }
             }
@@ -53,7 +54,7 @@
         val: function (ids) {
             var nodes = this.$zTreeObj.getCheckedNodes(true);
             if (!ids) {
-                var ids = [];
+                ids = [];
                 $(nodes).each(function (index, node) {
                     ids.push(node.id);
                 })
@@ -97,12 +98,23 @@
         bindSearch: function () {
             this.searchTime = null;
             var _this = this;
+            this.clearbtn.click(function () {
+                _this.searchInput.val('');
+                _this.search_tree_el.hide();
+                _this.tree_el.show();
+                _this.$searchZTreeObj.destroy();
+            });
             this.searchInput.keyup(function (event) {
+                var keyWord = $(this).val().trim();
+                if (keyWord === "") {
+                    _this.clearbtn.hide();
+                } else {
+                    _this.clearbtn.show();
+                }
                 if (event.keyCode !== 13) {
                     return false;
                 }
                 _this.$doload = false;
-                var keyWord = $(this).val().trim();
                 /*上一句已经执行了直接清理掉*/
                 if (this.searchTime) {
                     clearTimeout(this.searchTime);
@@ -111,33 +123,53 @@
                     if (keyWord === "") {
                         _this.search_tree_el.hide();
                         _this.tree_el.show();
-                        _this.$searchZTreeObj.destroy();
+                        if (_this.$searchZTreeObj) {
+                            _this.$searchZTreeObj.destroy();
+                        }
                         return;
                     }
                     _this.search_tree_el.show();
                     _this.tree_el.hide();
-                    var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, null);    //通过关键字模糊搜索
+                    var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, null);//通过关键字模糊搜索
+                    var datas = [];
+                    datas = datas.concat(nodeList);
+                    if (_this.options.searchShowParent) {
+                        $(nodeList).each(function (index, node) {
+                            _this.loadParents(node, datas);
+                        })
+                    }
                     _this.$doload = true;
-                    _this.lazyShowSearchNode(0, nodeList)
+                    /*_this.lazyShowSearchNode(0, datas, 1)*/
+                    _this.initSearchTree(datas);
 
                 }, 500);
             });
         },
-        lazyShowSearchNode: function (index, nodeList) {
+        loadParents: function (node, datas) {
+            var parent = node.getParentNode();
+            if (parent) {
+                datas.unshift(parent);
+                this.loadParents(parent, datas);
+            } else {
+                return;
+            }
+        },
+        lazyShowSearchNode: function (index, nodeList, size) {
             var _this = this;
             var nodelength = nodeList.length;
             if (!this.$doload) {
                 return;
             }
             if (index < nodelength) {
-                var _list = nodeList.slice(index, index += 100);
-                if (index === 100) {
+                var _list = nodeList.slice(index, index += size);
+                if (index === size) {
+                    /*首次加载初始化树*/
                     this.initSearchTree(_list);
-                    this.lazyShowSearchNode(index, nodeList);
+                    this.lazyShowSearchNode(index, nodeList, size);
                 } else {
                     setTimeout(function () {
                         _this.$searchZTreeObj.addNodes(null, -1, _list);
-                        _this.lazyShowSearchNode(index, nodeList);
+                        _this.lazyShowSearchNode(index, nodeList, size);
                     }, 1000);
                 }
             }
@@ -202,7 +234,7 @@
             /*计算抽屉方向*/
             var _this = this;
             var onBodyMusedown = function (event) {
-                if (!$(event.target).parents("#"+_this.id).length > 0) {
+                if (!$(event.target).parents("#" + _this.id).length > 0) {
                     dropdown_container.fadeOut("fast");
                     $("body").unbind("mousedown", onBodyMusedown);
                 }
@@ -230,6 +262,7 @@
             this.$el.css({display: 'block'});
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
             this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 20) + 'px;">');
+            this.clearbtn = $('<span href="javascript:void(0);" class="clear">×</span>')
             var height = this.options.height + (this.options.height == "auto" ? "" : "px");
             this.tree_el = $('<ul class="ztree" style="height:' + height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
             this.search_tree_el = $('<ul class="ztree" style="height:' + height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
@@ -237,6 +270,7 @@
             this.dropdown_container = $('<div  class="dropdown_container"  ></div>');
             if (this.options.filter) {
                 this.dropdown_container.append(this.searchInput);
+                this.dropdown_container.append(this.clearbtn);
             }
             this.dropdown_container.append(this.tree_el);
             this.dropdown_container.append(this.search_tree_el.hide());
@@ -333,6 +367,9 @@
                 data: {
                     simpleData: {
                         enable: true
+                    },
+                    key: {
+                        children: "nodes"
                     }
                 },
                 callback: {
@@ -373,10 +410,10 @@
         },
         onAsyncSuccess: function (event, treeId, treeNode, msg) {
             this.m2v();
-            this.tree_el.find("a").mouseleave(function (event) {
+            this.tree_el.find("a").mouseleave(function () {
                 event.stopPropagation();
             });
-            this.tree_el.find("span").mouseleave(function (event) {
+            this.tree_el.find("span").mouseleave(function () {
                 event.stopPropagation();
             });
         },
