@@ -116,7 +116,7 @@
                     }
                     _this.search_tree_el.show();
                     _this.tree_el.hide();
-                    var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, 0);    //通过关键字模糊搜索
+                    var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, null);    //通过关键字模糊搜索
                     _this.$doload = true;
                     _this.lazyShowSearchNode(0, nodeList)
 
