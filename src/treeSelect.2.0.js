@@ -21,7 +21,7 @@
             /*模拟异步加载*/
             setTimeout(function () {
                 defer.resolve();
-            }, 500);
+            }, 100);
         }
     };
     var TreeSelect = function (el, options) {
@@ -108,7 +108,10 @@
                 _this.searchInput.val('');
                 _this.search_tree_el.hide();
                 _this.tree_el.show();
-                _this.$searchZTreeObj.destroy();
+                if (_this.$searchZTreeObj) {
+                    _this.$searchZTreeObj.destroy();
+                }
+                _this.clearbtn.hide();
             });
             this.searchInput.keyup(function (event) {
                 var keyWord = $(this).val().trim();
