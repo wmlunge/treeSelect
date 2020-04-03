@@ -13,9 +13,9 @@ api更加丰富。结构更加清晰
 **TreeSelect 欢迎使用本插件: TreeSelect**
 
 #### 多选示例图片：
-![demo](https://user-gold-cdn.xitu.io/2019/12/28/16f4cfb0a596db62?w=323&h=317&f=png&s=13324)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0403/201104_3e421a7b_2042758.png "2.png")
 #### 单选选示例图片
-![demo](https://user-gold-cdn.xitu.io/2019/12/28/16f4cfb0a7f11f77?w=322&h=415&f=png&s=17136)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0403/201119_302a8da7_2042758.png "3.png")
 #### 快速上手示例
 
 **1. 引入jquery,ztree,TreeSelect等js和css文件**
