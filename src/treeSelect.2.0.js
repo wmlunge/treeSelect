@@ -16,8 +16,14 @@
         direction: "auto",
         filter: true,
         slideModel: 'click',
-        searchShowParent: false
-    }
+        searchShowParent: false,
+        beforeSearchPromise: function (defer, treeSelectObj) {
+            /*模拟异步加载*/
+            setTimeout(function () {
+                defer.resolve();
+            }, 500);
+        }
+    };
     var TreeSelect = function (el, options) {
         this.$el = $(el);
         var _this = this;
@@ -57,7 +63,7 @@
                 ids = [];
                 $(nodes).each(function (index, node) {
                     ids.push(node.id);
-                })
+                });
                 return ids;
             } else {
                 /*赋值*/
@@ -114,37 +120,50 @@
                 if (event.keyCode !== 13) {
                     return false;
                 }
-                _this.$doload = false;
-                /*上一句已经执行了直接清理掉*/
-                if (this.searchTime) {
-                    clearTimeout(this.searchTime);
+                if (_this.options.beforeSearchPromise) {
+                    $.Deferred(function (defer) {
+                        /*进行ajax请求并且加载完成数据后按照下面方式进行调用即可触发搜索*/
+                        _this.options.beforeSearchPromise(defer, _this);
+                    }).promise().then(function () {
+                        _this.doSearch(keyWord);
+                    });
+                } else {
+                    _this.doSearch(keyWord);
                 }
-                this.searchTime = setTimeout(function () {
-                    if (keyWord === "") {
-                        _this.search_tree_el.hide();
-                        _this.tree_el.show();
-                        if (_this.$searchZTreeObj) {
-                            _this.$searchZTreeObj.destroy();
-                        }
-                        return;
-                    }
-                    _this.search_tree_el.show();
-                    _this.tree_el.hide();
-                    var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, null);//通过关键字模糊搜索
-                    var datas = [];
-                    datas = datas.concat(nodeList);
-                    if (_this.options.searchShowParent) {
-                        $(nodeList).each(function (index, node) {
-                            _this.loadParents(node, datas);
-                        })
-                    }
-                    _this.$doload = true;
-                    _this.initSearchTree(datas);
-
-                }, 500);
             });
         },
-        /*todo 添加搜索前置事件*/
+        beforeSearchPromise: function () {
+            return
+        },
+        doSearch: function (keyWord) {
+            var _this = this;
+            /*异步执行低频率执行解决性能问题*/
+            if (_this.searchTime) {
+                clearTimeout(_this.searchTime);
+            }
+            _this.searchTime = setTimeout(function () {
+                if (keyWord === "") {
+                    _this.search_tree_el.hide();
+                    _this.tree_el.show();
+                    if (_this.$searchZTreeObj) {
+                        _this.$searchZTreeObj.destroy();
+                    }
+                    return;
+                }
+                _this.search_tree_el.show();
+                _this.tree_el.hide();
+                var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, null);//通过关键字模糊搜索
+                var datas = [];
+                datas = datas.concat(nodeList);
+                if (_this.options.searchShowParent) {
+                    $(nodeList).each(function (index, node) {
+                        _this.loadParents(node, datas);
+                    })
+                }
+                _this.initSearchTree(datas);
+            }, 500);
+
+        },
         loadParents: function (node, datas) {
             var parent = node.getParentNode();
             if (parent) {
