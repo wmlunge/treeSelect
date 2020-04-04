@@ -19,9 +19,7 @@
         searchShowParent: false,
         beforeSearchPromise: function (defer, treeSelectObj) {
             /*模拟异步加载*/
-            setTimeout(function () {
-                defer.resolve();
-            }, 100);
+            defer.resolve();
         }
     };
     var TreeSelect = function (el, options) {
