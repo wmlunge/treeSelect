@@ -133,9 +133,6 @@
                 }
             });
         },
-        beforeSearchPromise: function () {
-            return
-        },
         doSearch: function (keyWord) {
             var _this = this;
             /*异步执行低频率执行解决性能问题*/
