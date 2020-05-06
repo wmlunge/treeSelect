@@ -3,7 +3,20 @@
         zNodes: [],
         async: {
             enable: false,
-            url: ""
+            url: "",
+            autoParam: ["id"]
+        },
+        data: {
+            key: {
+                name: "name",
+                isParent: "isParent"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId",
+                rootPId: 0
+            }
         },
         callback: {
             onCheck: function (treeNode) {
@@ -17,7 +30,8 @@
         filter: true,
         slideModel: 'click',
         searchShowParent: false,
-        beforeSearchPromise: function (defer, treeSelectObj) {
+        textModel: 'detail',/*simple*/
+        beforeSearchPromise: function (defer, treeSelectObj, keyWord) {
             /*模拟异步加载*/
             defer.resolve();
         }
@@ -36,11 +50,11 @@
         }
         var $options = function () {
             return $.extend({}, defaults, options, _this.$el.data());//合并业务数据
-        }
+        };
         /*避免共用同一个配置时两边干扰*/
         this.options = this.cloneObj(new $options());
         this.init();
-    }
+    };
     TreeSelect.prototype = {
         constructor: TreeSelect,
         init: function () {
@@ -57,20 +71,21 @@
         },
         val: function (ids) {
             var nodes = this.$zTreeObj.getCheckedNodes(true);
-            if (!ids) {
+            var _this=this;
+
+            if (ids==undefined) {
                 ids = [];
                 $(nodes).each(function (index, node) {
-                    ids.push(node.id);
+                    ids.push(node[_this.options.data.simpleData.idKey]);
                 });
                 return ids;
             } else {
                 /*赋值*/
-                var _this = this;
                 this.options.checks = ids;
                 $(nodes).each(function (index, node) {
                     node.checked = false;
                     _this.$zTreeObj.updateNode(node);
-                })
+                });
                 $(ids).each(function (index, id) {
                     var node = _this.$zTreeObj.getNodeByParam("id", id);
                     node.checked = true;
@@ -84,9 +99,12 @@
         text: function () {
             var nodes = this.$zTreeObj.getCheckedNodes(true);
             var texts = [];
+            var _this = this;
             $(nodes).each(function (index, node) {
-                texts.push(node.name);
-            })
+                var names = [node[this.options.data.key.name]];
+                _this.getNodeName(node, names);
+                texts.push(names.join("/"));
+            });
             return texts;
         },
         bindEvent: function () {
@@ -124,9 +142,23 @@
                 if (_this.options.beforeSearchPromise) {
                     $.Deferred(function (defer) {
                         /*进行ajax请求并且加载完成数据后按照下面方式进行调用即可触发搜索*/
-                        _this.options.beforeSearchPromise(defer, _this);
-                    }).promise().then(function () {
-                        _this.doSearch(keyWord);
+                        _this.options.beforeSearchPromise(defer, _this, keyWord);
+                    }).promise().then(function (data) {
+                        var loadPromises = [];
+                        if (data) {
+                            $(data).each(function (index, item) {
+                                var pid = item[_this.options.data.simpleData.pIdKey];
+                                var p = _this.$zTreeObj.getNodeByParam(_this.options.data.simpleData.idKey, pid, null);
+                                if (p && (!p.children || p.children.length == 0)) {
+                                    var loadPromise = _this.$zTreeObj.reAsyncChildNodesPromise(p, "refresh");
+                                    loadPromises.push(loadPromise);
+                                }
+                            });
+                        }
+                        Promise.all(loadPromises).then(function (v) {
+                            _this.doSearch(keyWord);
+                        })
+
                     });
                 } else {
                     _this.doSearch(keyWord);
@@ -150,23 +182,29 @@
                 }
                 _this.search_tree_el.show();
                 _this.tree_el.hide();
-                var nodeList = _this.$zTreeObj.getNodesByParamFuzzy('name', keyWord, null);//通过关键字模糊搜索
-                var datas = [];
-                datas = datas.concat(nodeList);
+                var nodeList = _this.$zTreeObj.getNodesByParamFuzzy(_this.options.data.key.name, keyWord, null);//通过关键字模糊搜索
+                var datasMap = {};
+                $(nodeList).each(function (index, item) {
+                    datasMap[item[_this.options.data.simpleData.idKey]] = item;
+                });
+
                 if (_this.options.searchShowParent) {
                     $(nodeList).each(function (index, node) {
-                        _this.loadParents(node, datas);
+                        _this.loadParents(node, datasMap);
                     })
                 }
-                _this.initSearchTree(datas);
+                _this.initSearchTree(Object.values(datasMap), keyWord);
             }, 500);
 
         },
-        loadParents: function (node, datas) {
+        loadParents: function (node, datasMap) {
             var parent = node.getParentNode();
             if (parent) {
-                datas.unshift(parent);
-                this.loadParents(parent, datas);
+                var copyparent = $.extend({}, parent);
+                copyparent.children = null;
+                copyparent.open = true;
+                datasMap[parent[this.options.data.simpleData.idKey]] = copyparent;
+                this.loadParents(parent, datasMap);
             } else {
                 return;
             }
@@ -235,7 +273,7 @@
                     dropdown_container.fadeOut("fast");
                     $("body").unbind("mousedown", onBodyMusedown);
                 }
-            }
+            };
             this.$el.click(function () {
                 if (_this.ifSlideUp()) {
                     dropdown_container.addClass("up")
@@ -247,6 +285,7 @@
                 }
                 if (!dropdown_container.is(':visible')) {
                     dropdown_container.slideDown("fast");
+                    _this.searchInput.focus();
                     $("body").bind("mousedown", onBodyMusedown);
                 } else {
                     dropdown_container.fadeOut("fast");
@@ -259,7 +298,7 @@
             this.$el.css({display: 'block'});
             this.container = this.$el.wrap('<div class="mts-container"/>').parent();
             this.searchInput = $('<input class="searchInput" placeholder="按enter检索" type="text" style="width: ' + (this.$el.outerWidth() - 20) + 'px;">');
-            this.clearbtn = $('<span href="javascript:void(0);" class="clear">×</span>')
+            this.clearbtn = $('<span href="javascript:void(0);" class="clearbtn">×</span>')
             var height = this.options.height + (this.options.height == "auto" ? "" : "px");
             this.tree_el = $('<ul class="ztree" style="height:' + height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
             this.search_tree_el = $('<ul class="ztree" style="height:' + height + '; width:' + (this.$el.outerWidth() - 2) + 'px;"></ul>');
@@ -280,12 +319,12 @@
         },
         initDeafaultCheckedStatus: function (nodes) {
             var _this = this;
-            var needUpdateNodes = []
+            var needUpdateNodes = [];
             if (this.options.checks && this.options.checks.length > 0) {
                 $(nodes).each(function (index, node) {
                     var checkFlag = false;
                     $(_this.options.checks).each(function (i, id) {
-                        if (id == node.id) {
+                        if (id == node[_this.options.data.simpleData.idKey]) {
                             checkFlag = true;
                             if (node.checked != true) {
                                 node.checked = true;
@@ -303,7 +342,6 @@
                 });
             }
             return needUpdateNodes;
-
         },
         initTree: function () {
             var _this = this;
@@ -318,11 +356,7 @@
                     dblClickExpand: false,
                     showIcon: false
                 },
-                data: {
-                    simpleData: {
-                        enable: true
-                    }
-                },
+                data: _this.options.data,
                 callback: {
                     onCheck: _this.onCheck.bind(_this),
                     onAsyncSuccess: _this.onAsyncSuccess.bind(_this),
@@ -342,10 +376,10 @@
             };
             _this.initDeafaultCheckedStatus(this.options.zNodes);
             this.$zTreeObj = $.fn.zTree.init(this.tree_el, setting, this.options.zNodes);
-            this.onCheck();
+            /*this.onCheck();*/
             return this;
         },
-        initSearchTree: function (data) {
+        initSearchTree: function (data, param) {
             var _this = this;
             var setting = {
                 check: {
@@ -358,20 +392,22 @@
                     dblClickExpand: false,
                     showIcon: false,
                     fontCss: function (treeId, treeNode) {
-                        return {color: "#FFA200", "font-weight": "bold"};
+                        if (treeNode[_this.options.data.key.name].indexOf(param) > -1) {
+                            return {color: "#FFA200", "font-weight": "bold"};
+                        }
+                        return {}
                     }
                 },
-                data: {
-                    simpleData: {
-                        enable: true
-                    },
-                    key: {
-                        children: "nodes"
+                data: $.extend({}, _this.options.data, {
+                    data: {
+                        key: {
+                            children: "nodes"
+                        }
                     }
-                },
+                }),
                 callback: {
                     onCheck: function (e, treeId, treeNode) {
-                        var node = _this.$zTreeObj.getNodeByParam("id", treeNode.id);
+                        var node = _this.$zTreeObj.getNodeByParam(_this.options.data.simpleData.idKey, treeNode[_this.options.data.simpleData.idKey]);
                         _this.$zTreeObj.checkNode(node, treeNode.checked, true);
                         _this.onCheck();
                     },
@@ -386,15 +422,17 @@
         },
         onCheck: function (e, treeId, treeNode) {
             this.m2v();
-            this.options.callback.onCheck(this);
+            this.options.callback.onCheck(this,treeNode);
         },
         m2v: function () {
             var nodes = this.$zTreeObj.getCheckedNodes(true);
             var text = "";
             var checks = "";
             for (var i = 0, l = nodes.length; i < l; i++) {
-                text += nodes[i].name + ",";
-                checks += nodes[i].id + ",";
+                var texts = [nodes[i][this.options.data.key.name]];
+                this.getNodeName(nodes[i], texts);
+                text += texts.join("/") + ",";
+                checks += nodes[i][this.options.data.simpleData.idKey] + ",";
             }
             if (text.length > 0) {
                 text = text.substring(0, text.length - 1);
@@ -404,6 +442,19 @@
             }
             this.$el.attr("checks", checks);
             this.$el.val(text);
+            this.$el.attr("title", text);
+        },
+        getNodeName: function (node, texts) {
+            if (this.options.textModel == 'simple') {
+                return texts;
+            }
+            var parent = node.getParentNode();
+            if (parent) {
+                texts.unshift(parent[this.options.data.key.name]);
+                return this.getNodeName(parent, texts);
+            } else {
+                return texts;
+            }
         },
         onAsyncSuccess: function (event, treeId, treeNode, msg) {
             this.m2v();
@@ -427,7 +478,7 @@
         },
         destory: function () {
             if (this.container) {
-                $.data(this.$el[0], 'treeSelect', undefined);
+                this.$el.removeData('treeSelect');
                 this.container.replaceWith(this.$el);
                 this.container = null;
                 this.$zTreeObj.destroy();
@@ -437,7 +488,7 @@
 
             }
         }
-    }
+    };
     $.fn.treeSelect = function (options) {
         var resultArr = [];
         this.each(function () {
